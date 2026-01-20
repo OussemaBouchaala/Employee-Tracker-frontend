@@ -1,0 +1,40 @@
+<div class="job-management">
+    <div class="header">
+        <h2>Job Post Management</h2>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Company</th>
+                    <th>Posted By</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (job of jobs; track job.id) {
+                <tr>
+                    <td>{{ job.title }}</td>
+                    <td>{{ job.company }}</td>
+                    <td>{{ job.postedBy }}</td>
+                    <td>{{ job.date }}</td>
+                    <td>
+                        <span class="badge" [class]="job.status.toLowerCase()">{{ job.status }}</span>
+                    </td>
+                    <td class="actions">
+                        @if (job.status === 'Pending') {
+                        <button (click)="approveJob(job.id)" class="btn-icon approve">Approve</button>
+                        <button (click)="rejectJob(job.id)" class="btn-icon reject">Reject</button>
+                        }
+                        <button (click)="deleteJob(job.id)" class="btn-icon delete">Delete</button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

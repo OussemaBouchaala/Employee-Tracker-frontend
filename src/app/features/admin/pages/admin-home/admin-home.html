@@ -1,0 +1,24 @@
+<div class="admin-home">
+    <h2>Dashboard Overview</h2>
+
+    <div class="stats-grid">
+        @for (stat of stats; track stat.title) {
+        <div class="stat-card">
+            <h3>{{ stat.title }}</h3>
+            <div class="value">{{ stat.value }}</div>
+            <div class="change">{{ stat.change }} from last month</div>
+        </div>
+        }
+    </div>
+
+    <div class="charts-placeholder">
+        <div class="chart-card">
+            <h3>User Growth</h3>
+            <div class="mock-chart">Chart Placeholder</div>
+        </div>
+        <div class="chart-card">
+            <h3>Job Applications</h3>
+            <div class="mock-chart">Chart Placeholder</div>
+        </div>
+    </div>
+</div>

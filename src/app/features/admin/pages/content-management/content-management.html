@@ -1,0 +1,33 @@
+<div class="content-management">
+    <div class="content-management">
+        <div class="header">
+            <h2>Content Management</h2>
+            <button (click)="saveContent()" class="btn-primary">Save Changes</button>
+        </div>
+
+        <div class="content-grid">
+            <div class="content-card">
+                <h3>Homepage Header</h3>
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" [(ngModel)]="homeTitle" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Subtitle</label>
+                    <textarea class="form-control" [(ngModel)]="homeSubtitle" rows="3"></textarea>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h3>About Page</h3>
+                <div class="form-group">
+                    <label>Vision</label>
+                    <textarea class="form-control" [(ngModel)]="aboutVision" rows="5"></textarea>
+                    <label>Mission Statement</label>
+                    <textarea class="form-control" [(ngModel)]="aboutMission" rows="5"></textarea>
+                    <label>Team</label>
+                    <textarea class="form-control" [(ngModel)]="aboutTeam" rows="5"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>

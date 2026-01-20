@@ -1,0 +1,39 @@
+<div class="user-management">
+    <div class="header">
+        <h2>User Management</h2>
+        <button class="btn-primary">Add User</button>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (user of users; track user.id) {
+                <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        <span class="badge" [class]="user.role.toLowerCase()">{{ user.role }}</span>
+                    </td>
+                    <td>
+                        <span class="status-dot" [class.active]="user.status === 'Active'"></span>
+                        {{ user.status }}
+                    </td>
+                    <td class="actions">
+                        <button (click)="editUser(user.id)" class="btn-icon">Edit</button>
+                        <button (click)="deleteUser(user.id)" class="btn-icon delete">Delete</button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
