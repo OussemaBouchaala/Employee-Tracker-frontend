@@ -1,0 +1,25 @@
+<div class="admin-layout">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h3>Admin Portal</h3>
+        </div>
+        <nav class="sidebar-nav">
+            <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+                Dashboard
+            </a>
+            <a routerLink="/admin/users" routerLinkActive="active" class="nav-item">
+                Users
+            </a>
+            <a routerLink="/admin/jobs" routerLinkActive="active" class="nav-item">
+                Job Posts
+            </a>
+            <a routerLink="/admin/content" routerLinkActive="active" class="nav-item">
+                Content
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <router-outlet></router-outlet>
+    </main>
+</div>
