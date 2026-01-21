@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AdminDashboard } from './features/admin/pages/admin-dashboard/admin-dashboard';
-import { App } from './app';
+
 export const routes: Routes = [
     {
         path: '',

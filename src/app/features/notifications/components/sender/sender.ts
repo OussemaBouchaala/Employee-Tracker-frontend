@@ -1,6 +1,6 @@
 import { Component, effect, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NotificationService } from '../../services/notification';
+import { NotificationService } from '../../../../core/services/notification';
 @Component({
   selector: 'app-sender',
   imports: [FormsModule],

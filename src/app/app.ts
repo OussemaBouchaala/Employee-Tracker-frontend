@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Notification } from "./components/notification/notification";
-import { Sender } from "./components/sender/sender";
+import { Notification } from "./features/notifications/components/notification/notification";
+import { Sender } from "./features/notifications/components/sender/sender";
 import { Navbar } from './features/nav/components/navbar/navbar';
 
 @Component({
@@ -11,5 +11,5 @@ import { Navbar } from './features/nav/components/navbar/navbar';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('ProjectFrontend');
+  protected readonly title = signal('Job Matcher' );
 }
