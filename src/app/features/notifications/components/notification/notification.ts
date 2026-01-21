@@ -1,8 +1,9 @@
 import { Component, Signal } from '@angular/core';
-import { NotificationService } from '../../services/notification';
+import { NotificationService } from '../../../../core/services/notification';
 import { JsonPipe } from '@angular/common';
+
 @Component({
-imports: [JsonPipe],
+  imports: [JsonPipe],
   selector: 'app-notification',
   standalone: true,
   templateUrl: './notification.html',
