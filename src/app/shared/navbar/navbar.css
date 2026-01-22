@@ -38,3 +38,10 @@
   color: #007bff;
   font-weight: 600;
 }
+
+.profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
