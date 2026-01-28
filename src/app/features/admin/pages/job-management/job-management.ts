@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { AdminService } from '../../../../core/services/admin.service';
 
 @Component({
   selector: 'app-job-management',
@@ -7,24 +8,24 @@ import { Component } from '@angular/core';
   styleUrl: './job-management.css'
 })
 export class JobManagement {
-  jobs = [
-    { id: 1, title: 'Senior Frontend Developer', company: 'Tech Corp', postedBy: 'John Doe', status: 'Pending', date: '2023-10-25' },
-    { id: 2, title: 'UX Designer', company: 'Design Studio', postedBy: 'Bob Wilson', status: 'Approved', date: '2023-10-24' },
-    { id: 3, title: 'Backend Engineer', company: 'Cloud Systems', postedBy: 'John Doe', status: 'Rejected', date: '2023-10-23' },
-  ];
+  private adminService = inject(AdminService);
+  jobs = signal<any[]>([]);
 
-  approveJob(id: number) {
-    console.log('Approve job', id);
-    // Implement approve logic
+  constructor() {
+    this.loadJobs();
   }
 
-  rejectJob(id: number) {
-    console.log('Reject job', id);
-    // Implement reject logic
+  loadJobs() {
+    this.adminService.getJobs().subscribe({
+      next: (data) => this.jobs.set(data),
+      error: (err) => console.error('Failed to fetch jobs', err)
+    });
   }
 
-  deleteJob(id: number) {
-    console.log('Delete job', id);
-    // Implement delete logic
+  deleteJob(id: number | string) {
+    this.adminService.deleteJob(id).subscribe({
+      next: () => this.loadJobs(),
+      error: (err) => console.error('Failed to delete job', err)
+    });
   }
 }
