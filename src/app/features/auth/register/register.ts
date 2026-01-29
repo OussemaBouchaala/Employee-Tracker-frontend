@@ -14,6 +14,7 @@ export class Register {
   selectedRole: UserRole = 'CANDIDATE';
   fileName: string = '';
   profilePictureName: string = '';
+  cvTouched: boolean = false;
 
   formData = {
     name: '',

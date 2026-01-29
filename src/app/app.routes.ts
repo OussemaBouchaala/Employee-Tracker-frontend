@@ -17,6 +17,14 @@ export const routes: Routes = [
         loadComponent: () => import('./features/nav/pages/homepage/homepage').then(m => m.Homepage)
     },
     {
+        path: 'register',
+        component : Register
+    },
+    {
+        path: 'login',
+        component : Login
+       },
+    {
         path: 'about',
         loadComponent: () => import('./features/nav/pages/about/about').then(m => m.About)
     },

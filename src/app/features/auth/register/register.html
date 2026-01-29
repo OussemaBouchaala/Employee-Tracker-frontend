@@ -1,5 +1,5 @@
 <div class="register-container">
-    <form class="register-form" (ngSubmit)="onSubmit()">
+    <form class="register-form" #registerForm="ngForm" (ngSubmit)="onSubmit()">
         <h2>Create Account</h2>
 
         <!-- Role Selection -->
@@ -20,25 +20,50 @@
         <div class="form-group">
             <label for="name">Full Name</label>
             <input type="text" id="name" name="name" placeholder="Enter your full name" [(ngModel)]="formData.name"
-                required>
+                #nameInput="ngModel" required>
+            @if (nameInput.invalid && nameInput.touched) {
+            <span class="error-message">Full name is required</span>
+            }
         </div>
 
         <div class="form-group">
             <label for="email">Email Address</label>
             <input type="email" id="email" name="email" placeholder="Enter your email" [(ngModel)]="formData.email"
-                required>
+                #emailInput="ngModel" required email>
+            @if (emailInput.invalid && emailInput.touched) {
+            @if (emailInput.errors?.['required']) {
+            <span class="error-message">Email is required</span>
+            } @else if (emailInput.errors?.['email']) {
+            <span class="error-message">Please enter a valid email address</span>
+            }
+            }
         </div>
 
         <div class="form-group">
             <label for="password">Password</label>
             <input type="password" id="password" name="password" placeholder="Min 8 characters"
-                [(ngModel)]="formData.password" required minlength="8">
+                [(ngModel)]="formData.password" #passwordInput="ngModel" required minlength="8">
+            @if (passwordInput.invalid && passwordInput.touched) {
+            @if (passwordInput.errors?.['required']) {
+            <span class="error-message">Password is required</span>
+            } @else if (passwordInput.errors?.['minlength']) {
+            <span class="error-message">Password must be at least 8 characters</span>
+            }
+            }
         </div>
 
         <div class="form-group">
-            <label for="phoneNumber">Phone Number <span class="optional">(Optional)</span></label>
-            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number"
-                [(ngModel)]="formData.phoneNumber">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number (8 digits)"
+                [(ngModel)]="formData.phoneNumber" #phoneInput="ngModel" required minlength="8" maxlength="8"
+                pattern="[0-9]{8}">
+            @if (phoneInput.invalid && phoneInput.touched) {
+            @if (phoneInput.errors?.['required']) {
+            <span class="error-message">Phone number is required</span>
+            } @else if (phoneInput.errors?.['minlength'] || phoneInput.errors?.['pattern']) {
+            <span class="error-message">Phone number must be exactly 8 digits</span>
+            }
+            }
         </div>
 
         <div class="form-group">
@@ -62,7 +87,10 @@
             <div class="form-group">
                 <label for="companyName">Company Name</label>
                 <input type="text" id="companyName" name="companyName" placeholder="Enter your company name"
-                    [(ngModel)]="formData.companyName" required>
+                    [(ngModel)]="formData.companyName" #companyInput="ngModel" required>
+                @if (companyInput.invalid && companyInput.touched) {
+                <span class="error-message">Company name is required</span>
+                }
             </div>
         </div>
         }
@@ -76,24 +104,31 @@
             <div class="form-group">
                 <label for="description">About You</label>
                 <textarea id="description" name="description" placeholder="Tell us about yourself and your experience"
-                    [(ngModel)]="formData.description" rows="4" required></textarea>
+                    [(ngModel)]="formData.description" #descriptionInput="ngModel" rows="4" required></textarea>
+                @if (descriptionInput.invalid && descriptionInput.touched) {
+                <span class="error-message">Please tell us about yourself</span>
+                }
             </div>
             <div class="form-group">
                 <label for="cv">CV / Resume</label>
                 <div class="file-upload">
-                    <input type="file" id="cv" name="cv" (change)="onFileSelected($event)" accept=".pdf,.doc,.docx"
-                        required>
-                    <label for="cv" class="file-label">
+                    <input type="file" id="cv" name="cv" (change)="onFileSelected($event)" (blur)="cvTouched = true"
+                        accept=".pdf,.doc,.docx" required>
+                    <label for="cv" class="file-label" (click)="cvTouched = true">
                         <span class="file-icon">📄</span>
                         <span class="file-text">{{ fileName || 'Choose your CV file' }}</span>
                     </label>
                 </div>
+                @if (cvTouched && !fileName) {
+                <span class="error-message">Please upload your CV</span>
+                }
             </div>
         </div>
         }
 
         <div class="form-actions">
-            <button type="submit" class="btn-register">Create Account</button>
+            <button type="submit" class="btn-register"
+                [disabled]="registerForm.invalid || (selectedRole === 'CANDIDATE' && !fileName)">Create Account</button>
         </div>
 
         <div class="form-footer">
