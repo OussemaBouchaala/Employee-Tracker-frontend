@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 
 export type UserRole = 'CANDIDATE' | 'RECRUITER';
 
@@ -11,6 +12,7 @@ export type UserRole = 'CANDIDATE' | 'RECRUITER';
   styleUrl: './register.css'
 })
 export class Register {
+  constructor(private auth: AuthService) {}
   selectedRole: UserRole = 'CANDIDATE';
   fileName: string = '';
   profilePictureName: string = '';
@@ -46,10 +48,13 @@ export class Register {
 
   onSubmit(): void {
     const formData = new FormData();
+    const roleStr = this.selectedRole.toLowerCase();
+
+    // Append common fields
     formData.append('name', this.formData.name);
     formData.append('email', this.formData.email);
     formData.append('password', this.formData.password);
-    formData.append('role', this.selectedRole);
+    formData.append('role', roleStr);
 
     if (this.formData.phoneNumber) {
       formData.append('phoneNumber', this.formData.phoneNumber.toString());
@@ -70,7 +75,15 @@ export class Register {
       }
     }
 
-    console.log('Registration FormData ready to send');
-    // TODO: Call your auth service here with formData
+    console.log('FormData entries:', Array.from(formData.entries()));
+
+    this.auth.register(formData, roleStr).subscribe({
+      next: (res: any) => {
+        console.log('Registration successful', res);
+      },
+      error: (err: any) => {
+        console.error('Registration failed', err);
+      }
+    });
   }
 }

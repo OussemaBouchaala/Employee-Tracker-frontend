@@ -14,6 +14,10 @@ import { Register } from './features/auth/register/register';
 
 export const routes: Routes = [ 
     {
+        path: '',
+        component: Homepage
+    },
+    {
         path: 'register',
         component : Register
     },
@@ -21,10 +25,7 @@ export const routes: Routes = [
         path: 'login',
         component : Login
        },
-    {
-        path: '',
-        component: Homepage
-    },
+    
     {
         path: 'candidate',
         component: Candidate

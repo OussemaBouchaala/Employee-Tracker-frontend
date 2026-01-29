@@ -24,8 +24,8 @@ export class AuthService {
     );
   }
 
-  register(data: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/auth/register`, data); // Adjust endpoint if needed
+  register(data: any, role: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/auth/register-${role}`, data); // Adjust endpoint if needed
   }
 
   logout() {
