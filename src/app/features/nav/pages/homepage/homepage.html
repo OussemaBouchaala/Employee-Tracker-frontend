@@ -1,22 +1,93 @@
-<div class="homepage-container">
-    <section class="hero">
-        <h1>{{ manageTextsService.homeTitle() }}</h1>
-        <p>{{ manageTextsService.homeSubtitle() }}</p>
-        <a routerLink="/about" class="cta-button">Learn More</a>
+<div class="landing-page">
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">{{ manageTextsService.homeTitle() }}</h1>
+            <p class="hero-subtitle">{{ manageTextsService.homeSubtitle() }}</p>
+            <div class="hero-actions">
+                <a routerLink="/login" class="btn btn-primary">Get Started</a>
+                <a href="#about" class="btn btn-outline">Learn More</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <!-- Placeholder for a nice hero image or abstract shape -->
+            <div class="abstract-shape"></div>
+        </div>
+    </header>
+
+    <!-- Roles Section -->
+    <section id="roles" class="roles-section">
+        <div class="section-header">
+            <h2>Who We Serve</h2>
+            <p>Connecting talent with opportunity.</p>
+        </div>
+        <div class="cards-grid">
+            <div class="role-card candidate-card">
+                <div class="card-icon">
+                    <app-icon name="user"></app-icon> <!-- Assuming user icon exists or use standard img -->
+                </div>
+                <h3>For Candidates</h3>
+                <p>Build your profile, showcase your skills, and get matched with top companies looking for talent like
+                    you.</p>
+                <ul class="feature-list">
+                    <li>Create a professional profile</li>
+                    <li>Upload your resume</li>
+                    <li>Get instant job matches</li>
+                </ul>
+            </div>
+            <div class="role-card recruiter-card">
+                <div class="card-icon">
+                    <app-icon name="briefcase"></app-icon> <!-- Assuming icon exists -->
+                </div>
+                <h3>For Recruiters</h3>
+                <p>Streamline your hiring process. Post jobs, search our talent pool, and find the perfect fit faster.
+                </p>
+                <ul class="feature-list">
+                    <li>Post job openings</li>
+                    <li>Search verified candidates</li>
+                    <li>Manage applications efficiently</li>
+                </ul>
+            </div>
+        </div>
     </section>
 
-    <section class="features">
-        <div class="feature-card">
-            <h2>Modern Design</h2>
-            <p>Clean and responsive interface built with the latest web standards.</p>
-        </div>
-        <div class="feature-card">
-            <h2>Fast Performance</h2>
-            <p>Optimized for speed and efficiency to ensure a smooth user experience.</p>
-        </div>
-        <div class="feature-card">
-            <h2>Secure</h2>
-            <p>Built with security in mind to protect your data and privacy.</p>
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>About Us</h2>
+                <h3>Our Vision</h3>
+                <p>{{ manageTextsService.aboutVision() }}</p>
+                <h3>Our Mission</h3>
+                <p>{{ manageTextsService.aboutMission() }}</p>
+            </div>
+            <div class="about-visual">
+                <!-- Abstract visual -->
+            </div>
         </div>
     </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="contact-container">
+            <h2>Get in Touch</h2>
+            <p>Have questions? We're here to help.</p>
+            <form class="contact-form">
+                <div class="form-group">
+                    <input type="text" placeholder="Your Name" class="form-input">
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Your Email" class="form-input">
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Your Message" rows="4" class="form-input"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2024 Job Matcher. All rights reserved.</p>
+    </footer>
 </div>

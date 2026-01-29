@@ -1,1 +1,116 @@
-<p>recruiter works!</p>
+<app-auth-navbar></app-auth-navbar>
+
+<main class="dashboard">
+    <header class="dashboard-header">
+        <h1>Recruiter Dashboard 🚀</h1>
+        <p>Manage your job posts and find the best candidates</p>
+    </header>
+
+    <!-- Stats Grid -->
+    <section class="stats-section">
+        <div class="stat-card">
+            <div class="stat-icon blue">📋</div>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.totalPosts }}</span>
+                <span class="stat-label">Active Posts</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon cyan">👥</div>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.totalApplicants }}</span>
+                <span class="stat-label">Total Applicants</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green">✅</div>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.hiredThisMonth }}</span>
+                <span class="stat-label">Hired This Month</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon purple">📊</div>
+            <div class="stat-info">
+                <span class="stat-value">{{ stats.avgMatchRate }}%</span>
+                <span class="stat-label">Avg Match Rate</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="content-grid">
+        <!-- Job Posts Section -->
+        <section class="posts-section">
+            <div class="section-header">
+                <h2>Your Job Posts</h2>
+                <a routerLink="/recruiter/new-job" class="btn btn-primary">+ New Post</a>
+            </div>
+            <div class="posts-table">
+                <div class="table-header">
+                    <span>Job Title</span>
+                    <span>Applicants</span>
+                    <span>Match Rate</span>
+                    <span>Status</span>
+                    <span>Actions</span>
+                </div>
+                @for (job of jobPosts; track job.id) {
+                <div class="table-row">
+                    <span class="job-title">{{ job.title }}</span>
+                    <span class="applicants">{{ job.applicants }}</span>
+                    <span class="match-rate">
+                        <div class="progress-bar">
+                            <div class="progress-fill" [style.width.%]="job.matchRate"></div>
+                        </div>
+                        {{ job.matchRate }}%
+                    </span>
+                    <span class="status" [class]="job.status">{{ job.status }}</span>
+                    <span class="actions">
+                        <a [routerLink]="['/recruiter/job', job.id, 'matches']" class="action-link">View Matches</a>
+                    </span>
+                </div>
+                }
+            </div>
+        </section>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Top Candidates -->
+            <section class="candidates-section">
+                <div class="section-header">
+                    <h2>Top Matches</h2>
+                    <a routerLink="/recruiter/candidates" class="view-all-link">View All →</a>
+                </div>
+                <div class="candidates-list">
+                    @for (candidate of topCandidates; track candidate.id) {
+                    <div class="candidate-card">
+                        <img [src]="candidate.avatar || 'assets/default-avatar.png'" alt="" class="candidate-avatar" />
+                        <div class="candidate-info">
+                            <strong>{{ candidate.name }}</strong>
+                            <span>{{ candidate.role }}</span>
+                        </div>
+                        <span class="candidate-match">{{ candidate.matchRate }}%</span>
+                    </div>
+                    }
+                </div>
+            </section>
+
+            <!-- Tips Section -->
+            <section class="tips-section">
+                <div class="section-header">
+                    <h2>Hiring Tips</h2>
+                </div>
+                <div class="tips-list">
+                    @for (tip of tips; track tip.title) {
+                    <div class="tip-card">
+                        <span class="tip-icon">{{ tip.icon }}</span>
+                        <div class="tip-content">
+                            <h4>{{ tip.title }}</h4>
+                            <p>{{ tip.description }}</p>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </section>
+        </aside>
+    </div>
+</main>
