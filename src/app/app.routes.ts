@@ -1,7 +1,17 @@
 import { Routes } from '@angular/router';
 import { AdminDashboard } from './features/admin/pages/admin-dashboard/admin-dashboard';
+import { Login } from './features/auth/login/login';
+import { Register } from './features/auth/register/register';
 
-export const routes: Routes = [
+export const routes: Routes = [ 
+    {
+        path: 'register',
+        component : Register
+    },
+       {
+        path: 'login',
+        component : Login
+       },
     {
         path: '',
         loadComponent: () => import('./features/nav/pages/homepage/homepage').then(m => m.Homepage)
