@@ -97,6 +97,10 @@ th {
   color: #dc3545;
 }
 
+.btn-icon.reject {
+  color: #dc3545;
+}
+
 .btn-icon:hover {
   text-decoration: underline;
 }

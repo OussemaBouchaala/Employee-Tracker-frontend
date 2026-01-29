@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (user of users; track user.id) {
+                @for (user of users(); track user.id) {
                 <tr>
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
@@ -28,8 +28,12 @@
                         {{ user.status }}
                     </td>
                     <td class="actions">
+                        @if (user.role === 'Recruiter') {
+                        <button (click)="approveRecruiter(user.id)" class="btn-icon approve">Approve</button>
+                        <button (click)="rejectRecruiter(user.id)" class="btn-icon reject">Reject</button>
+                        }
                         <button (click)="editUser(user.id)" class="btn-icon">Edit</button>
-                        <button (click)="deleteUser(user.id)" class="btn-icon delete">Delete</button>
+                        <button (click)="deleteUser(user.id, user.role)" class="btn-icon delete">Delete</button>
                     </td>
                 </tr>
                 }

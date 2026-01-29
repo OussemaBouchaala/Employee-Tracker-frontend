@@ -3,30 +3,44 @@
         <a routerLink="/" class="brand-link">Job Matcher</a>
     </div>
     <ul class="navbar-nav">
+        <!-- Common link -->
         <li class="nav-item">
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
                 class="nav-link">Home</a>
         </li>
-        <li class="nav-item">
-            <a routerLink="/about" routerLinkActive="active" class="nav-link">About</a>
-        </li>
+
+        @if (!isAuthenticated) {
+        <!-- Guest Links -->
+        <!-- <li class="nav-item">
+                <a routerLink="/about" routerLinkActive="active" class="nav-link">About</a>
+            </li> -->
         <li class="nav-item">
             <a routerLink="/login" routerLinkActive="active" class="nav-link">Login</a>
         </li>
-        <li class="nav-item">
-            <a routerLink="/register" routerLinkActive="active" class="nav-link">Register</a>
-        </li>
+        } @else {
+        <!-- Authenticated Links -->
         <li class="nav-item">
             <app-icon (click)="toggleNotif()" name="notification"></app-icon>
             @if (isNotificationsVisible) {
             <app-notification></app-notification>
             }
         </li>
-        <li class="nav-item">
-            <img src="" (click)="toggleMenu()" alt="profile" class="profile-image" />
+
+        <li class="nav-item dropdown-container">
+            <img [src]="user?.profilePicture || 'assets/default-profile.png'" (click)="toggleMenu()" alt="profile"
+                class="profile-image" />
             @if (isMenuVisible) {
-            <app-profile></app-profile>
+            <div class="dropdown-menu">
+                <div class="dropdown-header">
+                    <strong>{{ user?.name || 'User' }}</strong>
+                </div>
+                <a routerLink="/profile" (click)="toggleMenu()" class="dropdown-item">Profile</a>
+                <a routerLink="/settings" (click)="toggleMenu()" class="dropdown-item">Settings</a>
+                <div class="dropdown-divider"></div>
+                <button (click)="logout()" class="dropdown-item logout-btn">Logout</button>
+            </div>
             }
         </li>
+        }
     </ul>
 </nav>

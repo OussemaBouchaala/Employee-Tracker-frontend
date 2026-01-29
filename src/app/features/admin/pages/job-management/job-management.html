@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (job of jobs; track job.id) {
+                @for (job of jobs(); track job.id) {
                 <tr>
                     <td>{{ job.title }}</td>
                     <td>{{ job.company }}</td>
@@ -26,10 +26,6 @@
                         <span class="badge" [class]="job.status.toLowerCase()">{{ job.status }}</span>
                     </td>
                     <td class="actions">
-                        @if (job.status === 'Pending') {
-                        <button (click)="approveJob(job.id)" class="btn-icon approve">Approve</button>
-                        <button (click)="rejectJob(job.id)" class="btn-icon reject">Reject</button>
-                        }
                         <button (click)="deleteJob(job.id)" class="btn-icon delete">Delete</button>
                     </td>
                 </tr>

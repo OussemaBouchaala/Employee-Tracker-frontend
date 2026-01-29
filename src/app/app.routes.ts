@@ -1,9 +1,22 @@
 import { Routes } from '@angular/router';
+import { Homepage } from './features/nav/pages/homepage/homepage';
 import { AdminDashboard } from './features/admin/pages/admin-dashboard/admin-dashboard';
+import { AdminHome } from './features/admin/pages/admin-home/admin-home';
+import { UserManagement } from './features/admin/pages/user-management/user-management';
+import { JobManagement } from './features/admin/pages/job-management/job-management';
+import { ContentManagement } from './features/admin/pages/content-management/content-management';
+import { Candidate } from './features/auth-home/pages/candidate/candidate';
+import { Recruiter } from './features/auth-home/pages/recruiter/recruiter';
+import { Profile } from './features/auth-home/pages/profile/profile';
+import { NotFound } from './features/nav/pages/not-found/not-found';
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
 
 export const routes: Routes = [ 
+    {
+        path: '',
+        component: Homepage
+    },
     {
         path: 'register',
         component : Register
@@ -12,13 +25,18 @@ export const routes: Routes = [
         path: 'login',
         component : Login
        },
+    
     {
-        path: '',
-        loadComponent: () => import('./features/nav/pages/homepage/homepage').then(m => m.Homepage)
+        path: 'candidate',
+        component: Candidate
     },
     {
-        path: 'about',
-        loadComponent: () => import('./features/nav/pages/about/about').then(m => m.About)
+        path: 'recruiter',
+        component: Recruiter
+    },
+    {
+        path: 'profile',
+        component: Profile
     },
     {
         path: 'admin',
@@ -26,20 +44,24 @@ export const routes: Routes = [
         children: [
             {
                 path: '',
-                loadComponent: () => import('./features/admin/pages/admin-home/admin-home').then(m => m.AdminHome)
+                component: AdminHome
             },
             {
                 path: 'users',
-                loadComponent: () => import('./features/admin/pages/user-management/user-management').then(m => m.UserManagement)
+                component: UserManagement
             },
             {
                 path: 'jobs',
-                loadComponent: () => import('./features/admin/pages/job-management/job-management').then(m => m.JobManagement)
+                component: JobManagement
             },
             {
                 path: 'content',
-                loadComponent: () => import('./features/admin/pages/content-management/content-management').then(m => m.ContentManagement)
+                component: ContentManagement
             }
         ]
+    },
+    {
+        path: '**',
+        component: NotFound
     }
 ];

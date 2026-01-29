@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { AdminService } from '../../../../core/services/admin.service';
 
 @Component({
   selector: 'app-user-management',
@@ -7,26 +8,68 @@ import { Component } from '@angular/core';
   styleUrl: './user-management.css'
 })
 export class UserManagement {
-  users = [
-    { id: 1, name: 'John Doe', role: 'Recruiter', status: 'Active', email: 'john@example.com' },
-    { id: 2, name: 'Jane Smith', role: 'Candidate', status: 'Active', email: 'jane@example.com' },
-    { id: 3, name: 'Bob Wilson', role: 'Recruiter', status: 'Inactive', email: 'bob@example.com' },
-    { id: 4, name: 'Alice Brown', role: 'Candidate', status: 'Active', email: 'alice@example.com' },
-    { id: 5, name: 'New Recruiter', role: 'Recruiter', status: 'Pending', email: 'new@example.com' },
-  ];
+  private adminService = inject(AdminService);
+  users = signal<any[]>([]);
 
-  approveUser(id: number) {
-    console.log('Approve user', id);
-    // Implement approve logic
+  constructor() {
+    this.loadUsers();
   }
 
-  deleteUser(id: number) {
-    console.log('Delete user', id);
-    // Implement delete logic
+  loadUsers() {
+    // Determine how to display mixed lists. For now, we can fetch both and combine, or just show them.
+    // Assuming the user wants to see all users.
+    // Let's combine them for now or just start with Recruiters as they have 'Pending' status which is important.
+    // Better approach: Let's fetch both and combine them into the 'users' signal.
+    
+    // We can use forkJoin but let's keep it simple for now and just fetch them.
+    this.adminService.getRecruiters().subscribe(recruiters => {
+      const formattedRecruiters = recruiters.map(r => ({ ...r,name: r.name ,email: r.email, role: 'Recruiter', status: r.approvalStatus }));
+        
+      this.adminService.getCandidates().subscribe(candidates => {
+        const formattedCandidates = candidates.map(c => ({ ...c,name: c.name ,email: c.email, role: 'Candidate', status: 'Active' })); // Candidates usually active if they exist
+        this.users.set([...formattedRecruiters, ...formattedCandidates]);
+        console.log("users",this.users());
+      });
+    });
+    
   }
 
-  editUser(id: number) {
+  approveRecruiter(id: number | string) {
+    this.adminService.approveRecruiter(id).subscribe({
+      next: () => {
+        console.log('User approved');
+        this.loadUsers();
+      },
+      error: (err) => console.error('Failed to approve user', err)
+    });
+  }
+
+  rejectRecruiter(id: number | string) {
+    this.adminService.rejectRecruiter(id).subscribe({
+      next: () => {
+        console.log('User rejected');
+        this.loadUsers();
+      },
+      error: (err) => console.error('Failed to reject user', err)
+    });
+  }
+
+  deleteUser(id: number | string, role: string) {
+    if (role === 'Recruiter') {
+      this.adminService.deleteRecruiter(id).subscribe({
+        next: () => this.loadUsers(),
+        error: (err) => console.error('Failed to delete recruiter', err)
+      });
+    } else if (role === 'Candidate') {
+      this.adminService.deleteCandidate(id).subscribe({
+         next: () => this.loadUsers(),
+         error: (err) => console.error('Failed to delete candidate', err)
+      });
+    }
+  }
+
+  // Edit might be complex depending on backend support, leaving placeholder or simple navigate
+  editUser(id: number | string) {
     console.log('Edit user', id);
-    // Implement edit logic
   }
 }

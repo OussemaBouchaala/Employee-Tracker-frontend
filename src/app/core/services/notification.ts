@@ -36,4 +36,8 @@ console.log('Received SSE message:', event.data );
   close() {
     this.eventSource?.close();
   }
+
+  unreadCount() {
+    return this.notification().unreadCount;
+  }
 }
