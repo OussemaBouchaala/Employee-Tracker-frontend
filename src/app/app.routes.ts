@@ -9,8 +9,18 @@ import { Candidate } from './features/auth-home/pages/candidate/candidate';
 import { Recruiter } from './features/auth-home/pages/recruiter/recruiter';
 import { Profile } from './features/auth-home/pages/profile/profile';
 import { NotFound } from './features/nav/pages/not-found/not-found';
+import { Login } from './features/auth/login/login';
+import { Register } from './features/auth/register/register';
 
-export const routes: Routes = [
+export const routes: Routes = [ 
+    {
+        path: 'register',
+        component : Register
+    },
+       {
+        path: 'login',
+        component : Login
+       },
     {
         path: '',
         component: Homepage
