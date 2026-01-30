@@ -1,6 +1,8 @@
+import { base_api } from "./base-api"
+
 export const AUTHENTIFICATION_API = {
-    registerCandidate: '/auth/register-candidate',
-    registerRecruiter: '/auth/register-recruiter',
-    login: '/auth/login',
-    verifyEmail: '/auth/verify',
+    registerCandidate: `${base_api}/auth/register-candidate`,
+    registerRecruiter: `${base_api}/auth/register-recruiter`,
+    login: `${base_api}/auth/login`,
+    verifyEmail: `${base_api}/auth/verify`,
 }

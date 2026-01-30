@@ -14,16 +14,25 @@ export class Auth {
 
   constructor(private http: HttpClient) { }
 
-  registerCandidate(candidate: RegisterCandidateDto, file: File) {
+  registerCandidate(candidate: RegisterCandidateDto, file: File, image?: File) {
     const formData = new FormData();
     formData.append('cv', file);
+
+    if (image) {
+      formData.append('image', image);
+    }
 
     formData.append('name', candidate.name);
     formData.append('email', candidate.email);
     formData.append('password', candidate.password);
     formData.append('role', candidate.role);
-    formData.append('profilePictureUrl', candidate.profilePictureUrl);
-    formData.append('phoneNumber', candidate.phoneNumber);
+    if (candidate.profilePictureUrl) {
+      formData.append('profilePictureUrl', candidate.profilePictureUrl);
+    }
+
+    if (candidate.phoneNumber !== undefined && candidate.phoneNumber !== null) {
+      formData.append('phoneNumber', candidate.phoneNumber.toString());
+    }
     formData.append('description', candidate.description);
 
     return this.http.post(AUTHENTIFICATION_API.registerCandidate, formData);
