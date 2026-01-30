@@ -22,7 +22,7 @@ export class Register {
   constructor(
     private auth: Auth,
     private router: Router,
-  ) {}
+  ) { }
 
   formData = {
     name: '',
@@ -71,7 +71,7 @@ export class Register {
       };
 
       this.auth.registerCandidate(candidate, this.formData.cv, this.formData.profilePicture ?? undefined).subscribe({
-        next: () => this.router.navigateByUrl('/login'),
+        next: () => this.router.navigateByUrl('/verify-email'),
         error: (err) => console.error(err),
       });
       return;

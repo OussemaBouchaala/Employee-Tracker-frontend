@@ -1,10 +1,37 @@
+<!-- Success Toast for Email Verification -->
+@if (showVerifiedToast) {
+<div class="toast-success">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+    class="toast-icon">
+    <path stroke-linecap="round" stroke-linejoin="round"
+      d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+  <span>Email verified successfully! You can now log in.</span>
+  <button class="toast-close" (click)="closeToast()">×</button>
+</div>
+}
+
+<!-- Error Toast for Login Errors -->
+@if (showErrorToast) {
+<div class="toast-error">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+    class="toast-icon">
+    <path stroke-linecap="round" stroke-linejoin="round"
+      d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+  </svg>
+  <span>{{ errorMessage }}</span>
+  <button class="toast-close" (click)="closeToast()">×</button>
+</div>
+}
+
+
 <div class="login-container">
   <form class="login-form" #form="ngForm" (ngSubmit)="onSubmit()">
     <h2>Login</h2>
     <div class="form-group">
       <label for="email">Email Address</label>
-      <input type="email" id="email" name="email" placeholder="Enter your email" required email [(ngModel)]="loginObj.email"
-        #email="ngModel">
+      <input type="email" id="email" name="email" placeholder="Enter your email" required email
+        [(ngModel)]="loginObj.email" #email="ngModel">
       @if(email.touched && email.invalid){
       <div class="error-message">
         @if(email.errors?.['required']){
@@ -29,7 +56,9 @@
       }
     </div>
     <div class="form-actions">
-      <button type="submit" class="btn-login" [disabled]="form.invalid">Sign In</button>
+      <button type="submit" class="btn-login" [disabled]="isLoading">
+        {{ isLoading ? 'Signing in...' : 'Sign In' }}
+      </button>
     </div>
     <div class="form-footer">
       <a>Forgot password?</a>

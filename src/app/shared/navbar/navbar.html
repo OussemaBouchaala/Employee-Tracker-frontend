@@ -10,12 +10,21 @@
         <li class="nav-item">
             <a routerLink="/about" routerLinkActive="active" class="nav-link">About</a>
         </li>
+        @if (isLoggedIn && currentUser?.role === 'recruiter') {
+        <li class="nav-item">
+            <a routerLink="/recruiter/jobs" routerLinkActive="active" class="nav-link">My Jobs</a>
+        </li>
+        }
+
+        <!-- Not logged in: Show Login -->
+        @if (!isLoggedIn) {
         <li class="nav-item">
             <a routerLink="/login" routerLinkActive="active" class="nav-link">Login</a>
         </li>
-        <li class="nav-item">
-            <a routerLink="/register" routerLinkActive="active" class="nav-link">Register</a>
-        </li>
+        }
+
+        <!-- Logged in: Show Notifications and Profile -->
+        @if (isLoggedIn) {
         <li class="nav-item">
             <app-icon (click)="toggleNotif()" name="notification"></app-icon>
             @if (isNotificationsVisible) {
@@ -23,10 +32,11 @@
             }
         </li>
         <li class="nav-item">
-            <img src="" (click)="toggleMenu()" alt="profile" class="profile-image" />
+            <img [src]="getProfileImageUrl()" (click)="toggleMenu()" alt="profile" class="profile-image" />
             @if (isMenuVisible) {
             <app-profile></app-profile>
             }
         </li>
+        }
     </ul>
 </nav>
