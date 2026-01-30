@@ -10,4 +10,5 @@ export const JOB_POST_API = {
     findAndMatchCandidates: (id: string) => `${base_api}/job-posts/${id}/find-and-match-candidates`,
     addCandidate: (id: string) => `${base_api}/job-posts/${id}/add-candidate`,
     getCandidates: (id: string) => `${base_api}/job-posts/${id}/candidates`,
+    contactCandidate: (jobPostId: string, candidateId: string) => `${base_api}/job-posts/${jobPostId}/contact-candidate/${candidateId}`,
 }

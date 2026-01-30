@@ -18,6 +18,12 @@ export class JobPostDetails implements OnInit {
     matchingLoading = signal<boolean>(false);
     jobId: string | null = null;
     matchAmount = 5;
+    contactMessage = signal<string>('');
+    selectedCandidate = signal<JobPostCandidate | null>(null);
+    showContactModal = signal<boolean>(false);
+    showToast = signal<boolean>(false);
+    toastMessage = signal<string>('');
+    toastType = signal<'success' | 'error'>('success');
 
     constructor(
         private route: ActivatedRoute,
@@ -71,6 +77,50 @@ export class JobPostDetails implements OnInit {
             error: (err) => {
                 console.error('Failed to find matches', err);
                 this.matchingLoading.set(false);
+            }
+        });
+    }
+
+    openContactModal(candidate: JobPostCandidate) {
+        this.selectedCandidate.set(candidate);
+        this.contactMessage.set('');
+        this.showContactModal.set(true);
+    }
+
+    closeContactModal() {
+        this.showContactModal.set(false);
+        this.selectedCandidate.set(null);
+        this.contactMessage.set('');
+    }
+
+    private openToast(type: 'success' | 'error', message: string) {
+        this.toastType.set(type);
+        this.toastMessage.set(message);
+        this.showToast.set(true);
+        setTimeout(() => {
+            this.showToast.set(false);
+        }, 4000);
+    }
+
+    closeToast() {
+        this.showToast.set(false);
+    }
+
+    sendContactMessage() {
+        const candidate = this.selectedCandidate();
+        const message = this.contactMessage();
+        
+        if (!candidate || !message || !this.jobId) return;
+
+        this.jobPostService.contactCandidate(this.jobId, candidate.candidateId, message).subscribe({
+            next: (response: any) => {
+                console.log('Contact message sent:', response);
+                this.closeContactModal();
+                this.openToast('success', 'Contact request sent successfully.');
+            },
+            error: (err: any) => {
+                console.error('Failed to send contact message', err);
+                this.openToast('error', 'Failed to send contact request. Please try again.');
             }
         });
     }

@@ -64,4 +64,8 @@ export class JobPostService {
     addCandidate(jobPostId: string, candidateId: string, score: number): Observable<JobPostCandidate> {
         return this.http.post<JobPostCandidate>(JOB_POST_API.addCandidate(jobPostId), { candidateId, score });
     }
+
+    contactCandidate(jobPostId: string, candidateId: string, message: string): Observable<any> {
+        return this.http.post(JOB_POST_API.contactCandidate(jobPostId, candidateId), { message });
+    }
 }

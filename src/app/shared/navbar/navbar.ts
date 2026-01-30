@@ -7,6 +7,7 @@ import { IconComponent } from '../icon/icon';
 import { Auth, User } from '../../core/services/auth';
 import { Subscription } from 'rxjs';
 import { base_api } from '../../config/api/base-api';
+import { NotificationService } from '../../core/services/notification';
 
 @Component({
   selector: 'app-navbar',
@@ -22,20 +23,40 @@ export class Navbar implements OnInit, OnDestroy {
   private authSubscription?: Subscription;
   private userSubscription?: Subscription;
 
-  constructor(private auth: Auth) { }
+  constructor(
+    private auth: Auth,
+    private notificationService: NotificationService,
+  ) { }
+
+  get unreadCount() {
+    return this.notificationService.unreadCount;
+  }
 
   ngOnInit(): void {
     this.authSubscription = this.auth.isLoggedIn$.subscribe(
       (loggedIn) => this.isLoggedIn = loggedIn
     );
     this.userSubscription = this.auth.currentUser$.subscribe(
-      (user) => this.currentUser = user
+      (user) => {
+        this.currentUser = user;
+        const userId = user?._id;
+        if (userId) {
+          this.notificationService.loadUserNotifications(userId).subscribe({
+            next: (res) => this.notificationService.notifications.set(res.notifications),
+          });
+          this.notificationService.loadUnreadCount(userId).subscribe({
+            next: (res) => this.notificationService.unreadCount.set(res.unreadCount),
+          });
+          this.notificationService.connect(userId);
+        }
+      }
     );
   }
 
   ngOnDestroy(): void {
     this.authSubscription?.unsubscribe();
     this.userSubscription?.unsubscribe();
+    this.notificationService.close();
   }
 
   getProfileImageUrl(): string {

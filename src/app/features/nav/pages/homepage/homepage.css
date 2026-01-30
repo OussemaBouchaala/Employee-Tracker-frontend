@@ -7,59 +7,195 @@
 
 .hero {
   text-align: center;
-  padding: 4rem 0;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 12px;
-  margin-bottom: 3rem;
+  padding: 5rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  margin-bottom: 4rem;
+  color: white;
 }
 
 .hero h1 {
-  font-size: 3rem;
-  color: #333;
-  margin-bottom: 1rem;
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
 }
 
 .hero p {
-  font-size: 1.25rem;
-  color: #666;
-  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  margin-bottom: 2.5rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .cta-button {
   display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background-color: #007bff;
-  color: white;
+  padding: 1rem 2rem;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: 600;
-  transition: background-color 0.3s ease;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
-.cta-button:hover {
-  background-color: #0056b3;
+.cta-button.primary {
+  background-color: white;
+  color: #667eea;
+}
+
+.cta-button.primary:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-2px);
+}
+
+.cta-button.secondary {
+  background-color: transparent;
+  color: white;
+  border-color: white;
+}
+
+.cta-button.secondary:hover {
+  background-color: white;
+  color: #667eea;
+  transform: translateY(-2px);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.section-header p {
+  font-size: 1.2rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.recruiters-section {
+  margin-bottom: 4rem;
+}
+
+.loading-recruiters {
+  text-align: center;
+  padding: 3rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.recruiters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.recruiter-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.recruiter-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.company-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: #667eea;
+}
+
+.recruiter-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.recruiter-label {
+  color: #059669;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.no-recruiters {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
 }
 
 .features {
+  margin-bottom: 4rem;
+}
+
+.features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
 }
 
 .feature-card {
-  padding: 2rem;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
 }
 
 .feature-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
 }
 
-.feature-card h2 {
+.feature-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: #667eea;
+}
+
+.feature-card h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
   color: #333;
   margin-bottom: 1rem;
 }
@@ -67,4 +203,58 @@
 .feature-card p {
   color: #666;
   line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+.stats {
+  margin-bottom: 4rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  text-align: center;
+}
+
+.stat-item {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  border-radius: 12px;
+  color: white;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero p {
+    font-size: 1.2rem;
+  }
+  
+  .section-header h2 {
+    font-size: 2rem;
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .cta-button {
+    width: 200px;
+    text-align: center;
+  }
 }

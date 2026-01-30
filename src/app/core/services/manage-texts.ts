@@ -4,11 +4,11 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root'
 })
 export class ManageTextsService {
-  private _homeTitle = signal<string>('Welcome to Our Platform');
-  private _homeSubtitle = signal<string>('Your journey to a modern web experience starts here.');
-  private _aboutVision = signal<string>('We are dedicated to building the future of web applications.');
-  private _aboutMission = signal<string>('Our mission is to provide excellence.');
-  private _aboutTeam = signal<string>('Meet our dedicated team of professionals.');
+  private _homeTitle = signal<string>('Find Your Perfect Career Match');
+  private _homeSubtitle = signal<string>('Connect with top recruiters and discover opportunities that align with your skills and aspirations.');
+  private _aboutVision = signal<string>('To bridge the gap between talented professionals and innovative companies, creating meaningful career connections that drive success for both candidates and organizations.');
+  private _aboutMission = signal<string>('We are committed to revolutionizing the recruitment process by leveraging cutting-edge technology and personalized matching algorithms. Our platform ensures that every job seeker finds their ideal role and every company discovers their perfect candidate.');
+  private _aboutTeam = signal<string>('Our diverse team brings together expertise from technology, human resources, and recruitment industries. We are passionate about creating transformative career experiences and building lasting professional relationships.');
 
   readonly homeTitle = this._homeTitle.asReadonly();
   readonly homeSubtitle = this._homeSubtitle.asReadonly();

@@ -1,42 +1,229 @@
 .about-container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
   font-family: 'Inter', sans-serif;
 }
 
 .about-hero {
-  text-align: center;
-  margin-bottom: 4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  margin-bottom: 5rem;
+  padding: 2rem 0;
 }
 
-.about-hero h1 {
-  font-size: 2.5rem;
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
   color: #333;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
 }
 
-.about-hero p {
+.hero-content p {
   font-size: 1.25rem;
+  line-height: 1.8;
   color: #666;
+  margin: 0;
+}
+
+.hero-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image svg {
+  max-width: 100%;
+  height: auto;
 }
 
 .about-content {
+  margin-bottom: 5rem;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.content-block {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.content-block:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.block-icon {
   display: flex;
-  flex-direction: column;
-  gap: 3rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: #667eea;
 }
 
 .content-block h2 {
   font-size: 1.75rem;
+  font-weight: 600;
   color: #333;
   margin-bottom: 1rem;
-  border-bottom: 2px solid #f0f0f0;
-  padding-bottom: 0.5rem;
 }
 
 .content-block p {
   font-size: 1.1rem;
   line-height: 1.8;
   color: #555;
+  margin: 0;
+}
+
+.stats-section {
+  margin-bottom: 5rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.stat-item {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-3px);
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.cta-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 4rem 2rem;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.cta-content h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.cta-content p {
+  font-size: 1.25rem;
+  color: #666;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.cta-button.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.cta-button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+}
+
+.cta-button.secondary {
+  background-color: transparent;
+  color: #667eea;
+  border-color: #667eea;
+}
+
+.cta-button.secondary:hover {
+  background-color: #667eea;
+  color: white;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .about-hero {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero-image svg {
+    width: 300px;
+    height: 225px;
+  }
+  
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .cta-button {
+    width: 200px;
+    text-align: center;
+  }
+  
+  .cta-content h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 }

@@ -1,6 +1,23 @@
 @if (jobPost(); as post) {
 <div class="container mx-auto px-4 py-8 max-w-5xl">
 
+    @if (showToast()) {
+    <div class="fixed top-4 right-4 z-50 max-w-sm w-full">
+        <div class="rounded-lg shadow-lg border p-4"
+            [class.bg-green-50]="toastType() === 'success'"
+            [class.border-green-200]="toastType() === 'success'"
+            [class.text-green-800]="toastType() === 'success'"
+            [class.bg-red-50]="toastType() === 'error'"
+            [class.border-red-200]="toastType() === 'error'"
+            [class.text-red-800]="toastType() === 'error'">
+            <div class="flex items-start justify-between gap-3">
+                <div class="text-sm font-medium">{{ toastMessage() }}</div>
+                <button (click)="closeToast()" class="text-sm opacity-70 hover:opacity-100">✕</button>
+            </div>
+        </div>
+    </div>
+    }
+
     <!-- Header / Breadcrumb -->
     <div class="mb-6">
         <a routerLink="/recruiter/jobs" class="text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1">
@@ -129,6 +146,7 @@
                                 View CV
                             </a>
                             <button
+                                (click)="openContactModal(match)"
                                 class="text-xs bg-blue-100 text-blue-700 rounded px-2 py-1 hover:bg-blue-200 font-medium">
                                 Contact
                             </button>
@@ -140,6 +158,42 @@
 
         </div>
     </div>
+
+    <!-- Contact Modal -->
+    @if (showContactModal()) {
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">
+                Contact {{ selectedCandidate()?.candidate?.user?.name || 'Candidate' }}
+            </h3>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Your Message
+                </label>
+                <textarea 
+                    [ngModel]="contactMessage()" (ngModelChange)="contactMessage.set($event)"
+                    rows="4" 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Introduce yourself and explain why you're interested in this candidate..."></textarea>
+            </div>
+
+            <div class="flex gap-3 justify-end">
+                <button 
+                    (click)="closeContactModal()"
+                    class="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50">
+                    Cancel
+                </button>
+                <button 
+                    (click)="sendContactMessage()"
+                    [disabled]="!contactMessage().trim()"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Send Message
+                </button>
+            </div>
+        </div>
+    </div>
+    }
 </div>
 } @else {
 <div class="flex justify-center items-center h-screen">
