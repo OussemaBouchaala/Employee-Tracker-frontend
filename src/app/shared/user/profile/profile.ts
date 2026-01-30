@@ -35,7 +35,12 @@ export class UserProfile implements OnInit {
 
   getProfileImageUrl(): string {
     const url = this.user?.profilePictureUrl;
-    if (!url) return '';
+
+    // If no profile picture URL, return default
+    if (!url || url.includes('undefined') || url.trim() === '') {
+      return '/assets/default-profile.png';
+    }
+
     if (url.startsWith('http')) return url;
     return `${base_api}${url}`;
   }

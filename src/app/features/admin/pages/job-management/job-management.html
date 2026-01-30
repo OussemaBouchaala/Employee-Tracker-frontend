@@ -1,40 +1,160 @@
 <div class="job-management">
     <div class="header">
         <h2>Job Post Management</h2>
+        <p class="subtitle">Manage all job postings in the system</p>
     </div>
 
+    @if (loading()) {
+    <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading job posts...</p>
+    </div>
+    } @else {
     <div class="table-container">
         <table>
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Company</th>
-                    <th>Posted By</th>
-                    <th>Date</th>
-                    <th>Status</th>
+                    <th>Function</th>
+                    <th>Type</th>
+                    <th>Seniority</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @for (job of jobs; track job.id) {
+                @for (job of jobs(); track job._id) {
                 <tr>
-                    <td>{{ job.title }}</td>
-                    <td>{{ job.company }}</td>
-                    <td>{{ job.postedBy }}</td>
-                    <td>{{ job.date }}</td>
                     <td>
-                        <span class="badge" [class]="job.status.toLowerCase()">{{ job.status }}</span>
+                        <div class="job-title">{{ job.title }}</div>
+                    </td>
+                    <td>{{ job.jobFunction }}</td>
+                    <td>
+                        <span class="badge employment-type">{{ job.employmentType }}</span>
+                    </td>
+                    <td>
+                        <span class="badge seniority">{{ job.seniorityLevel }}</span>
                     </td>
                     <td class="actions">
-                        @if (job.status === 'Pending') {
-                        <button (click)="approveJob(job.id)" class="btn-icon approve">Approve</button>
-                        <button (click)="rejectJob(job.id)" class="btn-icon reject">Reject</button>
-                        }
-                        <button (click)="deleteJob(job.id)" class="btn-icon delete">Delete</button>
+                        <button (click)="viewJobDetails(job)" class="btn-icon view" title="View Details">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            View
+                        </button>
+                        <button (click)="deleteJob(job._id)" class="btn-icon delete" title="Delete">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path
+                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                </path>
+                            </svg>
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                }
+                @if (jobs().length === 0) {
+                <tr>
+                    <td colspan="5" class="empty-state">
+                        <div class="empty-icon">📋</div>
+                        <p>No job posts found.</p>
                     </td>
                 </tr>
                 }
             </tbody>
         </table>
     </div>
+    }
+
+    <!-- Job Details Modal -->
+    @if (showDetailsModal() && selectedJob()) {
+    <div class="modal-overlay" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>{{ selectedJob()!.title }}</h3>
+                <button class="close-btn" (click)="closeModal()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="job-details-section">
+                    <h4>Job Information</h4>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <label>Company:</label>
+                            <span>{{ selectedJob()!.recruiter?.companyName || 'N/A' }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Posted By:</label>
+                            <span>{{ selectedJob()!.recruiter?.user?.name || 'N/A' }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Job Function:</label>
+                            <span>{{ selectedJob()!.jobFunction }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Employment Type:</label>
+                            <span class="badge employment-type">{{ selectedJob()!.employmentType }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Seniority Level:</label>
+                            <span class="badge seniority">{{ selectedJob()!.seniorityLevel }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Industries:</label>
+                            <span>{{ selectedJob()!.industries }}</span>
+                        </div>
+                    </div>
+                    <div class="detail-item full-width">
+                        <label>Requirements:</label>
+                        <p class="requirements">{{ selectedJob()!.requirements }}</p>
+                    </div>
+                </div>
+
+                <div class="candidates-section">
+                    <h4>Matched Candidates ({{ matchedCandidates().length }})</h4>
+                    @if (loadingCandidates()) {
+                    <div class="loading-candidates">Loading candidates...</div>
+                    } @else if (matchedCandidates().length > 0) {
+                    <div class="candidates-list">
+                        @for (match of matchedCandidates(); track match._id) {
+                        <div class="candidate-card">
+                            <div class="candidate-info">
+                                <div class="candidate-name">
+                                    {{ match.candidate?.user?.name || 'Unknown' }}
+                                </div>
+                                <div class="candidate-email">
+                                    {{ match.candidate?.user?.email || 'N/A' }}
+                                </div>
+                            </div>
+                            <div class="match-score">
+                                <span class="score-label">Match Score:</span>
+                                <span class="score-value">{{ match.score }}%</span>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                    } @else {
+                    <div class="no-candidates">
+                        <p>No matched candidates yet.</p>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+    <!-- Toast Notification -->
+    @if (showToast()) {
+    <div class="toast">
+        {{ toastMessage() }}
+    </div>
+    }
 </div>

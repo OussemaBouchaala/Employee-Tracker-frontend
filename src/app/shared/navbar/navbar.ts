@@ -61,9 +61,15 @@ export class Navbar implements OnInit, OnDestroy {
 
   getProfileImageUrl(): string {
     const url = this.currentUser?.profilePictureUrl;
-    if (!url) return '';
+
+    // If no profile picture URL, return default
+    if (!url || url.includes('undefined') || url.trim() === '') {
+      return '/assets/default-profile.png';
+    }
+
     // If it's already a full URL, return as-is
     if (url.startsWith('http')) return url;
+
     // If it's a relative path, prepend the backend URL
     return `${base_api}${url}`;
   }

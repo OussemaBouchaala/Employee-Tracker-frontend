@@ -3,6 +3,7 @@ import { AdminDashboard } from './features/admin/pages/admin-dashboard/admin-das
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
 import { VerifyEmail } from './features/auth/verify-email/verify-email';
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
     {
@@ -32,6 +33,7 @@ export const routes: Routes = [
     {
         path: 'admin',
         component: AdminDashboard,
+        canActivate: [adminGuard],
         children: [
             {
                 path: '',
