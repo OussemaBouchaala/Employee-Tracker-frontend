@@ -7,9 +7,6 @@
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
                 class="nav-link">Home</a>
         </li>
-        <li class="nav-item">
-            <a routerLink="/about" routerLinkActive="active" class="nav-link">About</a>
-        </li>
         @if (isLoggedIn && currentUser?.role === 'recruiter') {
         <li class="nav-item">
             <a routerLink="/recruiter/jobs" routerLinkActive="active" class="nav-link">My Jobs</a>
@@ -29,7 +26,8 @@
         <li class="nav-item">
             <div class="notif-wrap">
                 <button class="notif-button" (click)="toggleNotif()" [class.notif-button--unread]="unreadCount() > 0">
-                    <app-icon name="notification" [size]="22" [color]="unreadCount() > 0 ? '#2563eb' : '#6b7280'"></app-icon>
+                    <app-icon name="notification" [size]="22"
+                        [color]="unreadCount() > 0 ? '#2563eb' : '#6b7280'"></app-icon>
                     @if (unreadCount() > 0) {
                     <span class="notif-badge">{{ unreadCount() }}</span>
                     }
