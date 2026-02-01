@@ -11,7 +11,7 @@ export class AdminService {
 
   // Recruiters
   getRecruiters(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/user/recruiters`);
+    return this.http.get<any[]>(`${this.apiUrl}/user/recruiters`); //done
   }
 
   approveRecruiter(id: number | string): Observable<any> {
@@ -28,11 +28,11 @@ export class AdminService {
 
   // Candidates
   getCandidates(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/user/candidates`);
+    return this.http.get<any[]>(`${this.apiUrl}/user/candidates`); //done
   }
 
   deleteCandidate(id: number | string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/delete-candidate/${id}`);
+    return this.http.delete(`${this.apiUrl}/admin/delete-candidate/${id}`); 
   }
 
   // Jobs

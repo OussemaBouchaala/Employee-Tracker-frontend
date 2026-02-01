@@ -20,18 +20,20 @@ export class UserManagement {
     // Assuming the user wants to see all users.
     // Let's combine them for now or just start with Recruiters as they have 'Pending' status which is important.
     // Better approach: Let's fetch both and combine them into the 'users' signal.
-    
+
     // We can use forkJoin but let's keep it simple for now and just fetch them.
     this.adminService.getRecruiters().subscribe(recruiters => {
-      const formattedRecruiters = recruiters.map(r => ({ ...r,name: r.name ,email: r.email, role: 'Recruiter', status: r.approvalStatus }));
-        
+      console.log("recruiters",recruiters);
+      const formattedRecruiters = recruiters.map(r => ({ ...r,role: 'Recruiter'}));
+
       this.adminService.getCandidates().subscribe(candidates => {
-        const formattedCandidates = candidates.map(c => ({ ...c,name: c.name ,email: c.email, role: 'Candidate', status: 'Active' })); // Candidates usually active if they exist
+        console.log("candidates",candidates);
+        const formattedCandidates = candidates.map(c => ({ ...c,role: 'Candidate', approvalStatus: 'Active'})); // Candidates usually active if they exist
         this.users.set([...formattedRecruiters, ...formattedCandidates]);
         console.log("users",this.users());
       });
     });
-    
+
   }
 
   approveRecruiter(id: number | string) {
@@ -72,4 +74,5 @@ export class UserManagement {
   editUser(id: number | string) {
     console.log('Edit user', id);
   }
+
 }
