@@ -1,0 +1,93 @@
+<div class="profile-container">
+    <div class="profile-card">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <img [src]="getProfileImageUrl()" alt="Profile Picture" />
+            </div>
+
+            @if (isEditing) {
+            <input [(ngModel)]="editData.name" class="input-name" placeholder="Name">
+            } @else {
+            <h1 class="profile-name">{{ user?.name }}</h1>
+            }
+
+            <p class="profile-role">{{ user?.role | titlecase }}</p>
+
+            <div class="action-buttons">
+                @if (isEditing) {
+                <button class="btn-save" (click)="saveProfile()">Save</button>
+                <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+                } @else {
+                <button class="btn-edit" (click)="startEdit()">Edit Profile</button>
+                }
+            </div>
+        </div>
+
+        <!-- Profile Info -->
+        <div class="profile-info">
+            <div class="info-group">
+                <label>Email</label>
+                <p>{{ user?.email }}</p>
+            </div>
+
+            <div class="info-group">
+                <label>Phone Number</label>
+                @if (isEditing) {
+                <input [(ngModel)]="editData.phoneNumber" type="number" class="form-input" placeholder="Phone Number">
+                } @else {
+                <p>{{ user?.phoneNumber || 'Not provided' }}</p>
+                }
+            </div>
+
+            <!-- Recruiter Specific -->
+            @if (user?.role === 'recruiter') {
+            <div class="info-group">
+                <label>Company Name</label>
+                @if (isEditing) {
+                <input [(ngModel)]="editData.companyName" class="form-input" placeholder="Company Name">
+                } @else {
+                <p>{{ user?.recruiter?.companyName || 'Not provided' }}</p>
+                }
+            </div>
+            }
+
+            <!-- Candidate Specific -->
+            @if (user?.role === 'candidate') {
+            <div class="info-group">
+                <label>Description</label>
+                @if (isEditing) {
+                <textarea [(ngModel)]="editData.description" class="form-textarea" rows="4"
+                    placeholder="Brief description about yourself"></textarea>
+                } @else {
+                <p class="description-text">{{ user?.candidate?.description || 'No description provided' }}</p>
+                }
+            </div>
+
+            <div class="info-group">
+                <label>CV</label>
+                <div class="cv-container">
+                    @if (user?.candidate?.cv) {
+                    <a [href]="getCvUrl()" target="_blank" class="btn-cv">
+                        <i class="fas fa-file-download"></i> Download CV
+                    </a>
+                    } @else {
+                    <p>No CV uploaded</p>
+                    }
+                </div>
+            </div>
+            }
+
+            <div class="info-group">
+                <label>Account Status</label>
+                <p class="status-verified">
+                    @if (user?.verifiedAt) {
+                    <span class="badge-verified">✓ Verified</span>
+                    } @else {
+                    <span class="badge-pending">Pending Verification</span>
+                    }
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

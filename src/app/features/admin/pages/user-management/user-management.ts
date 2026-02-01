@@ -1,78 +1,96 @@
-import { Component, inject, signal } from '@angular/core';
-import { AdminService } from '../../../../core/services/admin.service';
+import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { UserManagementService } from '../../../../core/services/user-management.service';
+import { User } from '../../../../core/services/auth';
+import { EditUserModal } from './edit-user-modal/edit-user-modal';
 
 @Component({
   selector: 'app-user-management',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, EditUserModal],
   templateUrl: './user-management.html',
   styleUrl: './user-management.css'
 })
-export class UserManagement {
-  private adminService = inject(AdminService);
-  users = signal<any[]>([]);
+export class UserManagement implements OnInit {
+  // Using signals for reactive state management
+  users = signal<User[]>([]);
+  selectedUser = signal<User | null>(null);
+  isEditModalOpen = signal(false);
+  loading = signal(true);
 
-  constructor() {
+  // Toast notification signals
+  toastMessage = signal('');
+  showToast = signal(false);
+  toastType = signal<'success' | 'error' | 'info'>('success');
+
+  constructor(private userManagementService: UserManagementService) { }
+
+  ngOnInit() {
     this.loadUsers();
   }
 
   loadUsers() {
-    // Determine how to display mixed lists. For now, we can fetch both and combine, or just show them.
-    // Assuming the user wants to see all users.
-    // Let's combine them for now or just start with Recruiters as they have 'Pending' status which is important.
-    // Better approach: Let's fetch both and combine them into the 'users' signal.
-
-    // We can use forkJoin but let's keep it simple for now and just fetch them.
-    this.adminService.getRecruiters().subscribe(recruiters => {
-      console.log("recruiters",recruiters);
-      const formattedRecruiters = recruiters.map(r => ({ ...r,role: 'Recruiter'}));
-
-      this.adminService.getCandidates().subscribe(candidates => {
-        console.log("candidates",candidates);
-        const formattedCandidates = candidates.map(c => ({ ...c,role: 'Candidate', approvalStatus: 'Active'})); // Candidates usually active if they exist
-        this.users.set([...formattedRecruiters, ...formattedCandidates]);
-        console.log("users",this.users());
-      });
+    this.loading.set(true);
+    this.userManagementService.getAllUsers().subscribe({
+      next: (data) => {
+        this.users.set(data);
+        this.loading.set(false);
+        console.log('Users loaded:', data);
+      },
+      error: (err) => {
+        console.error('Error loading users:', err);
+        this.loading.set(false);
+        this.displayToast('Failed to load users', 'error');
+      }
     });
-
   }
 
-  approveRecruiter(id: number | string) {
-    this.adminService.approveRecruiter(id).subscribe({
+  approveUser(id: string) {
+    console.log('Approve user', id);
+  }
+
+  deleteUser(id: string) {
+    // Show confirmation toast instead of confirm dialog
+    const user = this.users().find(u => u._id === id);
+    if (!user) return;
+
+    // For now, we'll proceed with deletion directly
+    // In a real app, you might want a confirmation modal
+    this.userManagementService.deleteUser(id).subscribe({
       next: () => {
-        console.log('User approved');
+        this.displayToast(`User "${user.name}" deleted successfully`, 'success');
         this.loadUsers();
       },
-      error: (err) => console.error('Failed to approve user', err)
+      error: (err) => {
+        console.error('Error deleting user:', err);
+        this.displayToast('Failed to delete user', 'error');
+      }
     });
   }
 
-  rejectRecruiter(id: number | string) {
-    this.adminService.rejectRecruiter(id).subscribe({
-      next: () => {
-        console.log('User rejected');
-        this.loadUsers();
-      },
-      error: (err) => console.error('Failed to reject user', err)
-    });
+  openEditModal(user: User) {
+    this.selectedUser.set(user);
+    this.isEditModalOpen.set(true);
   }
 
-  deleteUser(id: number | string, role: string) {
-    if (role === 'Recruiter') {
-      this.adminService.deleteRecruiter(id).subscribe({
-        next: () => this.loadUsers(),
-        error: (err) => console.error('Failed to delete recruiter', err)
-      });
-    } else if (role === 'Candidate') {
-      this.adminService.deleteCandidate(id).subscribe({
-         next: () => this.loadUsers(),
-         error: (err) => console.error('Failed to delete candidate', err)
-      });
-    }
+  closeEditModal() {
+    this.isEditModalOpen.set(false);
+    this.selectedUser.set(null);
   }
 
-  // Edit might be complex depending on backend support, leaving placeholder or simple navigate
-  editUser(id: number | string) {
-    console.log('Edit user', id);
+  onUserUpdated(updatedUser: User) {
+    this.displayToast('User updated successfully', 'success');
+    this.loadUsers();
+    this.closeEditModal();
   }
 
+  displayToast(message: string, type: 'success' | 'error' | 'info' = 'success') {
+    this.toastMessage.set(message);
+    this.toastType.set(type);
+    this.showToast.set(true);
+
+    setTimeout(() => {
+      this.showToast.set(false);
+    }, 3000);
+  }
 }

@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+import { Router, RouterLink } from '@angular/router';
+import { Auth } from '../../../core/services/auth';
+import { RegisterCandidateDto } from '../../../core/models/auth/register-candidate.dto';
+import { RegisterRecruiterDto } from '../../../core/models/auth/register-recruiter.dto';
 
 export type UserRole = 'CANDIDATE' | 'RECRUITER';
 
@@ -12,10 +14,14 @@ export type UserRole = 'CANDIDATE' | 'RECRUITER';
   styleUrl: './register.css'
 })
 export class Register {
-  constructor(private auth: AuthService) {}
+  constructor(
+    private auth: Auth,
+    private router: Router,
+  ) { }
   selectedRole: UserRole = 'CANDIDATE';
   fileName: string = '';
   profilePictureName: string = '';
+  cvTouched: boolean = false;
 
   formData = {
     name: '',
@@ -47,43 +53,41 @@ export class Register {
   }
 
   onSubmit(): void {
-    const formData = new FormData();
-    const roleStr = this.selectedRole.toLowerCase();
-
-    // Append common fields
-    formData.append('name', this.formData.name);
-    formData.append('email', this.formData.email);
-    formData.append('password', this.formData.password);
-    formData.append('role', roleStr);
-
-    if (this.formData.phoneNumber) {
-      formData.append('phoneNumber', this.formData.phoneNumber.toString());
-    }
-
-    if (this.formData.profilePicture) {
-      formData.append('profilePicture', this.formData.profilePicture);
-    }
-
-    if (this.selectedRole === 'RECRUITER') {
-      formData.append('companyName', this.formData.companyName);
-    }
+    const role = this.selectedRole.toLowerCase();
 
     if (this.selectedRole === 'CANDIDATE') {
-      formData.append('description', this.formData.description);
-      if (this.formData.cv) {
-        formData.append('cv', this.formData.cv);
+      if (!this.formData.cv) {
+        return;
       }
+
+      const candidate: RegisterCandidateDto = {
+        name: this.formData.name,
+        email: this.formData.email,
+        password: this.formData.password,
+        role: role as any,
+        phoneNumber: this.formData.phoneNumber ?? undefined,
+        description: this.formData.description,
+      };
+
+      this.auth.registerCandidate(candidate, this.formData.cv, this.formData.profilePicture ?? undefined).subscribe({
+        next: () => this.router.navigateByUrl('/verify-email'),
+        error: (err) => console.error(err),
+      });
+      return;
     }
 
-    console.log('FormData entries:', Array.from(formData.entries()));
+    const recruiter: RegisterRecruiterDto = {
+      name: this.formData.name,
+      email: this.formData.email,
+      password: this.formData.password,
+      role: role as any,
+      phoneNumber: this.formData.phoneNumber ?? undefined,
+      companyName: this.formData.companyName,
+    };
 
-    this.auth.register(formData, roleStr).subscribe({
-      next: (res: any) => {
-        console.log('Registration successful', res);
-      },
-      error: (err: any) => {
-        console.error('Registration failed', err);
-      }
+    this.auth.registerRecruiter(recruiter).subscribe({
+      next: () => this.router.navigateByUrl('/login'),
+      error: (err) => console.error(err),
     });
   }
 }

@@ -227,6 +227,62 @@
     background: rgba(0, 0, 0, 0.5);
 }
 
+/* Validation Error State - Using Angular ng-invalid and ng-touched */
+.form-group input.ng-invalid.ng-touched,
+.form-group textarea.ng-invalid.ng-touched {
+    border-color: #ff4757;
+    background: rgba(255, 71, 87, 0.1);
+    box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.15), 0 0 15px rgba(255, 71, 87, 0.1);
+}
+
+/* Validation Error Focus State */
+.form-group input.ng-invalid.ng-touched:focus,
+.form-group textarea.ng-invalid.ng-touched:focus {
+    border-color: #ff4757;
+    background: rgba(255, 71, 87, 0.15);
+    box-shadow: 0 0 0 4px rgba(255, 71, 87, 0.2), 0 0 20px rgba(255, 71, 87, 0.15);
+}
+
+/* Valid Field State - Using Angular ng-valid and ng-touched */
+.form-group input.ng-valid.ng-touched:not([type="file"]),
+.form-group textarea.ng-valid.ng-touched {
+    border-color: #2ecc71;
+    background: rgba(46, 204, 113, 0.08);
+}
+
+/* Valid Field Focus State */
+.form-group input.ng-valid.ng-touched:focus:not([type="file"]),
+.form-group textarea.ng-valid.ng-touched:focus {
+    border-color: #2ecc71;
+    box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.15), 0 0 20px rgba(46, 204, 113, 0.1);
+}
+
+/* Error Message Styling */
+.error-message {
+    display: block;
+    color: #ff4757;
+    font-size: 0.8rem;
+    margin-top: 6px;
+    padding-left: 4px;
+    animation: errorSlide 0.3s ease-out;
+}
+
+.error-message::before {
+    content: '⚠ ';
+}
+
+@keyframes errorSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Section Divider */
 .section-divider {
     display: flex;
@@ -359,6 +415,21 @@
 .btn-register:active {
     transform: translateY(-1px);
     box-shadow: 0 8px 25px rgba(0, 212, 255, 0.35);
+}
+
+/* Button Disabled State */
+.btn-register:disabled {
+    background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+    cursor: not-allowed;
+    opacity: 0.6;
+    box-shadow: none;
+    transform: none;
+}
+
+.btn-register:disabled:hover {
+    transform: none;
+    box-shadow: none;
+    background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
 }
 
 /* Form Footer */

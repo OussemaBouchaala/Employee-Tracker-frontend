@@ -31,9 +31,10 @@
   display: flex;
   align-items: center;
   list-style: none;
-  gap: 1.5rem;
+  gap: 2rem;
   margin: 0;
   padding: 0;
+  align-items: center;
 }
 
 .nav-item {
@@ -78,8 +79,8 @@
 
 /* Profile Image */
 .profile-image {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   cursor: pointer;
   object-fit: cover;
@@ -180,5 +181,84 @@
 
   .nav-link {
     padding: 0.5rem;
+  }
+}
+
+.profile-image:hover {
+  border-color: #667eea;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.notif-wrap {
+  position: relative;
+}
+
+.notif-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid #e5e7eb;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.notif-button:hover {
+  background: rgba(102, 126, 234, 0.1);
+  border-color: #667eea;
+  transform: scale(1.05);
+}
+
+.notif-button--unread {
+  background: rgba(102, 126, 234, 0.15);
+  border-color: #667eea;
+}
+
+.notif-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+  border: 2px solid white;
+}
+
+.notif-dropdown {
+  position: absolute;
+  right: 0;
+  margin-top: 12px;
+  z-index: 50;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem 1.5rem;
+  }
+
+  .navbar-brand .brand-link {
+    font-size: 1.4rem;
+  }
+
+  .navbar-nav {
+    gap: 1.25rem;
+  }
+
+  .nav-link {
+    font-size: 0.95rem;
   }
 }
