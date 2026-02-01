@@ -76,6 +76,26 @@ th {
   background: #ffc107;
 }
 
+.status-dot.approved {
+  background: #007bff;
+}
+
+.pending {
+  color: #ffc107;
+}
+
+.active {
+  color: #28a745;
+}
+
+.approved {
+  color: #007bff;
+}
+
+.black {
+  color: black;
+}
+
 .actions {
   display: flex;
   gap: 0.5rem;

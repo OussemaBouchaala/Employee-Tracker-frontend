@@ -18,14 +18,14 @@
             <tbody>
                 @for (user of users(); track user.id) {
                 <tr>
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.email }}</td>
+                    <td class="black">{{ user.name }}</td>
+                    <td class="black">{{ user.email }}</td>
                     <td>
                         <span class="badge" [class]="user.role.toLowerCase()">{{ user.role }}</span>
                     </td>
                     <td>
-                        <span class="status-dot" [class.active]="user.status === 'Active'"></span>
-                        {{ user.status }}
+                        <span class="status-dot" [class.active]="user.approvalStatus === 'Active'" [class.pending]="user.approvalStatus === 'pending'" [class.approved]="user.approvalStatus === 'approved'"></span>
+                        <span [class.active]="user.approvalStatus === 'Active'" [class.pending]="user.approvalStatus === 'pending'" [class.approved]="user.approvalStatus === 'approved'">{{ user.approvalStatus }}</span>
                     </td>
                     <td class="actions">
                         @if (user.role === 'Recruiter') {
