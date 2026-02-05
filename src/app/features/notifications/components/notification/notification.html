@@ -1,4 +1,33 @@
-hello
-<div >
-  {{ notification() | json}}
+<div class="notif-panel">
+  <div class="notif-header">
+    <div class="notif-title">Notifications</div>
+    <div class="notif-subtitle">Unread: {{ unreadCount() }}</div>
+  </div>
+
+  @if (notifications().length === 0) {
+  <div class="notif-empty">No notifications</div>
+  }
+
+  <div class="notif-list">
+    @for (n of notifications(); track n._id) {
+    <div class="notif-item" [class.notif-item--unread]="n.status === 'UNREAD'">
+      <div class="notif-item-title">{{ n.title }}</div>
+      @if (n.senderName || n.senderCompanyName || n.senderEmail) {
+      <div class="notif-item-meta">
+        <div>
+          <span>{{ n.senderName || 'Recruiter' }}</span>
+          @if (n.senderCompanyName) {
+            <span class="muted"> - {{ n.senderCompanyName }}</span>
+          }
+        </div>
+        @if (n.senderEmail) {
+        <div class="muted">{{ n.senderEmail }}</div>
+        }
+      </div>
+      }
+      <div class="notif-item-body">{{ n.message }}</div>
+      <div class="notif-item-time">{{ n.createdAt }}</div>
+    </div>
+    }
+  </div>
 </div>

@@ -18,13 +18,21 @@ export class ContentManagement {
   aboutTeam = this.manageTextsService.aboutTeam();
 
   saveContent() {
-    this.manageTextsService.updateTexts({
+    const updates = {
       homeTitle: this.homeTitle,
       homeSubtitle: this.homeSubtitle,
       aboutVision: this.aboutVision,
       aboutMission: this.aboutMission,
       aboutTeam: this.aboutTeam
+    };
+    
+    this.manageTextsService.saveTexts(updates).subscribe({
+      next: () => alert('Content saved successfully!'),
+      error: (err) => {
+        console.error('Failed to save content', err);
+        alert('Failed to save content.');
+      }
     });
-    alert('Content saved successfully!');
   }
 }
+

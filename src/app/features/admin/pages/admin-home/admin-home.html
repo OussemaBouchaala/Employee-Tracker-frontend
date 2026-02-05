@@ -1,24 +1,111 @@
 <div class="admin-home">
-    <h2>Dashboard Overview</h2>
-
-    <div class="stats-grid">
-        @for (stat of stats; track stat.title) {
-        <div class="stat-card">
-            <h3>{{ stat.title }}</h3>
-            <div class="value">{{ stat.value }}</div>
-            <div class="change">{{ stat.change }} from last month</div>
+    <div class="page-header">
+        <div>
+            <h2>Dashboard Overview</h2>
+            <p class="subtitle">Welcome back! Here's what's happening with your platform.</p>
         </div>
-        }
     </div>
 
-    <div class="charts-placeholder">
-        <div class="chart-card">
-            <h3>User Growth</h3>
-            <div class="mock-chart">Chart Placeholder</div>
+    <div class="stats-grid">
+        <div class="stat-card users">
+            <div class="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3>Total Users</h3>
+                <div class="value">{{ stats()[0].value }}</div>
+            </div>
         </div>
-        <div class="chart-card">
-            <h3>Job Applications</h3>
-            <div class="mock-chart">Chart Placeholder</div>
+
+        <div class="stat-card jobs">
+            <div class="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3>Active Jobs</h3>
+                <div class="value">{{ stats()[1].value }}</div>
+            </div>
+        </div>
+
+        <div class="stat-card recruiters">
+            <div class="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3>Recruiters</h3>
+                <div class="value">{{ stats()[2].value }}</div>
+            </div>
+        </div>
+
+        <div class="stat-card candidates">
+            <div class="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <polyline points="17 11 19 13 23 9"></polyline>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <h3>Candidates</h3>
+                <div class="value">{{ stats()[3].value }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <h3>Quick Actions</h3>
+        <div class="actions-grid">
+            <a routerLink="/admin/users" class="action-card">
+                <div class="action-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </div>
+                <div class="action-content">
+                    <h4>Manage Users</h4>
+                    <p>View and edit user accounts</p>
+                </div>
+            </a>
+
+            <a routerLink="/admin/jobs" class="action-card">
+                <div class="action-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                    </svg>
+                </div>
+                <div class="action-content">
+                    <h4>Manage Jobs</h4>
+                    <p>Review and manage job postings</p>
+                </div>
+            </a>
+
+            <a routerLink="/admin/content" class="action-card">
+                <div class="action-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                </div>
+                <div class="action-content">
+                    <h4>Edit Content</h4>
+                    <p>Update website content</p>
+                </div>
+            </a>
         </div>
     </div>
 </div>

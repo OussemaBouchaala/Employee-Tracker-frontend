@@ -1,12 +1,57 @@
-import { Component } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { RouterLink, Router } from "@angular/router";
+import { Auth, User } from '../../core/services/auth';
+import { CommonModule } from '@angular/common';
+import { base_api } from '../../config/api/base-api';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
-  imports: [RouterLink],
+  imports: [RouterLink, CommonModule],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
-export class Profile {
+export class Profile implements OnInit, OnDestroy {
+  currentUser: User | null = null;
+  private userSubscription?: Subscription;
 
+  constructor(
+    private auth: Auth,
+    private router: Router
+  ) { }
+
+  ngOnInit(): void {
+    this.userSubscription = this.auth.currentUser$.subscribe(
+      user => this.currentUser = user
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.userSubscription?.unsubscribe();
+  }
+
+  getUserName(): string {
+    return this.currentUser?.name || 'User';
+  }
+
+  getUserEmail(): string {
+    return this.currentUser?.email || '';
+  }
+
+  getUserAvatar(): string {
+    const url = this.currentUser?.profilePictureUrl;
+
+    if (!url || url.includes('undefined') || url.trim() === '') {
+      return '/assets/default-profile.png';
+    }
+
+    if (url.startsWith('http')) return url;
+    return `${base_api}${url}`;
+  }
+
+  logout(): void {
+    this.auth.logout();
+    this.router.navigateByUrl('/');
+  }
 }
+
