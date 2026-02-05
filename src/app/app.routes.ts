@@ -2,6 +2,12 @@ import { Routes } from '@angular/router';
 import { AdminDashboard } from './features/admin/pages/admin-dashboard/admin-dashboard';
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
+import { About } from './features/nav/pages/about/about';
+import { AdminHome } from './features/admin/pages/admin-home/admin-home';
+import { UserManagement } from './features/admin/pages/user-management/user-management';
+import { JobManagement } from './features/admin/pages/job-management/job-management';
+import { ContentManagement } from './features/admin/pages/content-management/content-management';
+import { Homepage } from './features/nav/pages/homepage/homepage';
 
 export const routes: Routes = [ 
     {
@@ -14,8 +20,7 @@ export const routes: Routes = [
        },
     {
         path: '',
-        loadComponent: () => import('./features/nav/pages/homepage/homepage').then(m => m.Homepage)
-    },
+        component : Homepage    },
     {
         path: 'register',
         component : Register
@@ -26,7 +31,7 @@ export const routes: Routes = [
        },
     {
         path: 'about',
-        loadComponent: () => import('./features/nav/pages/about/about').then(m => m.About)
+        component : About
     },
     {
         path: 'admin',
@@ -34,20 +39,16 @@ export const routes: Routes = [
         children: [
             {
                 path: '',
-                loadComponent: () => import('./features/admin/pages/admin-home/admin-home').then(m => m.AdminHome)
-            },
+                component : AdminHome            },
             {
                 path: 'users',
-                loadComponent: () => import('./features/admin/pages/user-management/user-management').then(m => m.UserManagement)
-            },
+                component  : UserManagement            },
             {
                 path: 'jobs',
-                loadComponent: () => import('./features/admin/pages/job-management/job-management').then(m => m.JobManagement)
-            },
+                component : JobManagement            },
             {
                 path: 'content',
-                loadComponent: () => import('./features/admin/pages/content-management/content-management').then(m => m.ContentManagement)
-            }
+                component : ContentManagement        }
         ]
     }
 ];
