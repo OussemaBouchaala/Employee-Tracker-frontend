@@ -3,7 +3,8 @@
         <!-- Profile Header -->
         <div class="profile-header">
             <div class="profile-avatar">
-                <img [src]="getProfileImageUrl()" alt="Profile Picture" />
+                <img [src]="getProfileImageUrl()" alt="Profile Picture" (click)="triggerProfilePictureUpload()" />
+                <input #profilePictureInput id="profilePictureInput" type="file" accept=".jpg,.jpeg,.png" (change)="onProfilePictureSelected($event)" />
             </div>
 
             @if (isEditing) {
@@ -34,7 +35,7 @@
             <div class="info-group">
                 <label>Phone Number</label>
                 @if (isEditing) {
-                <input [(ngModel)]="editData.phoneNumber" type="number" class="form-input" placeholder="Phone Number">
+                <input [(ngModel)]="editData.phoneNumber" class="form-input" placeholder="Phone Number">
                 } @else {
                 <p>{{ user?.phoneNumber || 'Not provided' }}</p>
                 }
@@ -47,7 +48,7 @@
                 @if (isEditing) {
                 <input [(ngModel)]="editData.companyName" class="form-input" placeholder="Company Name">
                 } @else {
-                <p>{{ user?.recruiter?.companyName || 'Not provided' }}</p>
+                <p>{{ user?.companyName || 'Not provided' }}</p>
                 }
             </div>
             }
@@ -60,20 +61,27 @@
                 <textarea [(ngModel)]="editData.description" class="form-textarea" rows="4"
                     placeholder="Brief description about yourself"></textarea>
                 } @else {
-                <p class="description-text">{{ user?.candidate?.description || 'No description provided' }}</p>
+                <p class="description-text">{{ user?.description || 'No description provided' }}</p>
                 }
             </div>
 
             <div class="info-group">
                 <label>CV</label>
                 <div class="cv-container">
-                    @if (user?.candidate?.cv) {
+                    @if (user?.cv) {
                     <a [href]="getCvUrl()" target="_blank" class="btn-cv">
                         <i class="fas fa-file-download"></i> Download CV
                     </a>
+                    <button class="btn-edit-cv" (click)="triggerCvUpload()" title="Update CV">
+                        <i class="fas fa-pen"></i> Update CV
+                    </button>
                     } @else {
                     <p>No CV uploaded</p>
+                    <button class="btn-edit-cv" (click)="triggerCvUpload()" title="Upload CV">
+                        <i class="fas fa-upload"></i> Upload CV
+                    </button>
                     }
+                    <input #cvInput id="cvInput" type="file" accept=".pdf,.doc,.docx" (change)="onCvSelected($event)" style="display: none;" />
                 </div>
             </div>
             }

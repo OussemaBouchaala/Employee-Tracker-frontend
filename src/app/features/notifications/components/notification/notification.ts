@@ -1,7 +1,7 @@
 import { Component, Signal, WritableSignal } from '@angular/core';
 import { NotificationService } from '../../../../core/services/notification';
 import { CommonModule } from '@angular/common';
-import { Auth } from '../../../../core/services/auth';
+import { Auth } from '../../../../core/services/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -27,7 +27,7 @@ export class Notification {
     this.notifications = this.notificationService.notifications;
     this.unreadCount = this.notificationService.unreadCount;
     this.userSub = this.auth.currentUser$.subscribe((user) => {
-      const userId = user?._id;
+      const userId = user?.id;
       if (!userId) return;
 
       this.notificationService.loadUserNotifications(userId).subscribe({

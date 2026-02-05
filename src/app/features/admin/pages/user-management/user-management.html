@@ -22,7 +22,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (user of users(); track user._id) {
+                @for (user of users(); track user.id) {
                 <tr>
                     <td class="black">{{ user.name }}</td>
                     <td class="black">{{ user.email }}</td>
@@ -35,7 +35,7 @@
                     </td>
                     <td class="actions">
                         <button (click)="openEditModal(user)" class="btn-icon">Edit</button>
-                        <button (click)="deleteUser(user._id)" class="btn-icon delete">Delete</button>
+                        <button (click)="deleteUser(user.id)" class="btn-icon delete">Delete</button>
                     </td>
                 </tr>
                 }
@@ -53,7 +53,7 @@
     }
 
     <app-edit-user-modal [isOpen]="isEditModalOpen()" [user]="selectedUser()" (closeEvent)="closeEditModal()"
-        (saveEvent)="onUserUpdated($event)">
+        (saveEvent)="onUserUpdated()">
     </app-edit-user-modal>
 
     <!-- Toast Notification -->

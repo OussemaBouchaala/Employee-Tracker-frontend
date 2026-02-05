@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserManagementService } from '../../../../core/services/user-management.service';
-import { User } from '../../../../core/services/auth';
+import { User } from '../../../../core/services/auth.service';
 import { EditUserModal } from './edit-user-modal/edit-user-modal';
 
 @Component({
@@ -51,7 +51,7 @@ export class UserManagement implements OnInit {
 
   deleteUser(id: string) {
     // Show confirmation toast instead of confirm dialog
-    const user = this.users().find(u => u._id === id);
+    const user = this.users().find(u => u.id === id);
     if (!user) return;
 
     // For now, we'll proceed with deletion directly
@@ -78,7 +78,7 @@ export class UserManagement implements OnInit {
     this.selectedUser.set(null);
   }
 
-  onUserUpdated(updatedUser: User) {
+  onUserUpdated() {
     this.displayToast('User updated successfully', 'success');
     this.loadUsers();
     this.closeEditModal();

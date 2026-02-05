@@ -5,8 +5,6 @@ import { AdminHome } from './features/admin/pages/admin-home/admin-home';
 import { UserManagement } from './features/admin/pages/user-management/user-management';
 import { JobManagement } from './features/admin/pages/job-management/job-management';
 import { ContentManagement } from './features/admin/pages/content-management/content-management';
-import { Candidate } from './features/auth-home/pages/candidate/candidate';
-import { Recruiter } from './features/auth-home/pages/recruiter/recruiter';
 import { NotFound } from './features/nav/pages/not-found/not-found';
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
@@ -17,10 +15,6 @@ export const routes: Routes = [
   {
       path: '',
       component: Homepage
-  },
-  {
-      path: 'candidate',
-      component: Candidate
   },
   {
       path: 'register',
@@ -63,7 +57,6 @@ export const routes: Routes = [
   },
   {
       path: 'recruiter',
-      component: Recruiter,
       children: [
           {
               path: 'jobs',

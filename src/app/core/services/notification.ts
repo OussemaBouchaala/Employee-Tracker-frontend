@@ -22,9 +22,7 @@ constructor(private http: HttpClient) {}
 
     this.close();
     this.connectedUserId = userId;
-    this.eventSource = new EventSource(
-      `${base_api}/notification/stream/${userId}`
-    );
+    this.eventSource = new EventSource(`${base_api}/notification/get-stream/${userId}`);
 
     this.eventSource.onmessage = (event) => {
       const parsed = JSON.parse(event.data);
@@ -61,7 +59,4 @@ constructor(private http: HttpClient) {}
     this.connectedUserId = undefined;
   }
 
-  unreadCount() {
-    return this.notification().unreadCount;
-  }
 }

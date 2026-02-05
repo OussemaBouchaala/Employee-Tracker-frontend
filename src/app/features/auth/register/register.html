@@ -70,7 +70,7 @@
             <label for="profilePicture">Profile Picture <span class="optional">(Optional)</span></label>
             <div class="file-upload">
                 <input type="file" id="profilePicture" name="profilePicture" (change)="onProfilePictureSelected($event)"
-                    accept="image/*">
+                    accept=".png,.jpg,.jpeg">
                 <label for="profilePicture" class="file-label">
                     <span class="file-icon">🖼️</span>
                     <span class="file-text">{{ profilePictureName || 'Choose your profile picture' }}</span>

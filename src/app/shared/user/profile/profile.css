@@ -55,6 +55,13 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.profile-avatar img:hover {
+    opacity: 0.8;
+    filter: brightness(0.9);
 }
 
 .profile-name {
@@ -244,6 +251,26 @@
 }
 
 .btn-cv:hover {
+    background: rgba(99, 102, 241, 0.2);
+    color: white;
+}
+
+.btn-edit-cv {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(99, 102, 241, 0.1);
+    color: #818cf8;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 8px;
+}
+
+.btn-edit-cv:hover {
     background: rgba(99, 102, 241, 0.2);
     color: white;
 }

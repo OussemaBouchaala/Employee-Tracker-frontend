@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Auth } from '../../../core/services/auth';
+import { Auth } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 
 type VerifyStatus = 'pending' | 'verifying' | 'success' | 'error' | 'already-verified';

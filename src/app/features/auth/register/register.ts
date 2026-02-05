@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../../../core/services/auth';
+import { Auth } from '../../../core/services/auth.service';
 import { RegisterCandidateDto } from '../../../core/models/auth/register-candidate.dto';
 import { RegisterRecruiterDto } from '../../../core/models/auth/register-recruiter.dto';
 

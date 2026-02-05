@@ -3,7 +3,14 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserManagementService } from '../../../../../core/services/user-management.service';
-import { User } from '../../../../../core/services/auth';
+import { User } from '../../../../../core/services/auth.service';
+
+interface EditedModel {
+  name?: string;
+  phoneNumber?: string;
+  description?: string;
+  companyName?: string;
+}
 
 @Component({
     selector: 'app-edit-user-modal',
@@ -18,7 +25,7 @@ export class EditUserModal {
     @Output() closeEvent = new EventEmitter();
     @Output() saveEvent = new EventEmitter();
 
-    editData: any = {};
+    editData: EditedModel = {};
 
     constructor(private userManagementService: UserManagementService) { }
 
@@ -26,19 +33,23 @@ export class EditUserModal {
         if (this.user) {
             this.editData = {
                 name: this.user.name,
-                phoneNumber: this.user.phoneNumber,
-                companyName: this.user.recruiter?.companyName || '',
-                description: this.user.candidate?.description || ''
+                phoneNumber: this.user.phoneNumber
             };
+            if (this.user.role === 'candidate') {
+                this.editData.description = this.user.description!;
+            };
+            if (this.user.role === 'recruiter') {
+                this.editData.companyName = this.user.companyName!;
+            }
         }
     }
 
     save() {
         if (this.user) {
-            this.userManagementService.updateUser(this.user._id, this.editData).subscribe({
-                next: (updatedUser) => {
-                    this.saveEvent.emit(updatedUser);
-                    this.close();
+            this.userManagementService.updateUser(this.user.id, this.editData).subscribe({
+                next: () => {
+                    this.saveEvent.emit();
+                    this.close()
                 },
                 error: (err) => console.error('Error updating user:', err)
             });

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterLink, Router } from "@angular/router";
-import { Auth, User } from '../../core/services/auth';
+import { Auth, User } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { base_api } from '../../config/api/base-api';
 import { Subscription } from 'rxjs';
@@ -46,7 +46,7 @@ export class Profile implements OnInit, OnDestroy {
     }
 
     if (url.startsWith('http')) return url;
-    return `${base_api}${url}`;
+    return `${base_api}/${url}`;
   }
 
   logout(): void {

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { USER_MANAGEMENT_API } from '../../config/api/user-management-api';
 import { Observable } from 'rxjs';
-import { User } from './auth';
+import { User } from './auth.service';
 
 @Injectable({
     providedIn: 'root'
@@ -20,7 +20,7 @@ export class UserManagementService {
     }
 
     updateUser(id: string, data: Partial<User>): Observable<User> {
-        return this.http.put<User>(USER_MANAGEMENT_API.updateUser(id), data);
+        return this.http.patch<User>(USER_MANAGEMENT_API.updateUser(id), data);
     }
 
     getUser(id: string): Observable<User> {
