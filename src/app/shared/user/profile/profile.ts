@@ -18,6 +18,11 @@ export class UserProfile implements OnInit {
   profilePictureInput = signal<any>(null);
   cvInput = signal<any>(null);
 
+  // Toast notification
+  toastMessage = signal('');
+  showToast = signal(false);
+  toastType = signal<'success' | 'error'>('success');
+
   constructor(
     private auth: Auth,
     private router: Router
@@ -85,30 +90,49 @@ export class UserProfile implements OnInit {
     fileInput?.click();
   }
 
-  onFileSelected(event: any,fileType: 'profilePicture' | 'cv') {
+  onFileSelected(event: any, fileType: 'profilePicture' | 'cv') {
     const file = event.target.files[0];
     if (file) {
-      // You can add profile picture upload logic here
-      console.log('Profile picture selected in file:', file.name);
-      // Dummy API call for profile picture upload
+      const fileName = file.name;
+      const fileLabel = fileType === 'profilePicture' ? 'Profile picture' : 'CV';
+      
+      console.log(`${fileLabel} selected:`, fileName);
+      
       const formData = new FormData();
       formData.append(fileType, file);
-      console.log('formData prepared for upload:', Array.from(formData.entries()));
+      
       this.auth.updateProfile(formData as Partial<User>).subscribe({
         next: (user) => {
-          console.log('Profile picture updated successfully', user);
+          console.log(`${fileLabel} updated successfully`, user);
+          this.displayToast(`${fileLabel} "${fileName}" updated successfully!`, 'success');
         },
-        error: (err) => console.error('Failed to upload profile picture', err)
+        error: (err) => {
+          console.error(`Failed to upload ${fileLabel}`, err);
+          this.displayToast(`Failed to update ${fileLabel} "${fileName}"`, 'error');
+        }
       });
     }
-    console.log('Profile picture selected:', file.name);
-    // Call your auth service method to upload the profile picture
-
   }
 
   triggerCvUpload() {
+    console.log('triggerCvUpload called');
     const fileInput = document.getElementById('cvInput') as HTMLInputElement;
-    fileInput?.click();
+    console.log('CV file input element:', fileInput);
+    if (fileInput) {
+      fileInput.click();
+    } else {
+      console.error('CV input element not found!');
+    }
+  }
+
+  displayToast(message: string, type: 'success' | 'error'): void {
+    this.toastMessage.set(message);
+    this.toastType.set(type);
+    this.showToast.set(true);
+
+    setTimeout(() => {
+      this.showToast.set(false);
+    }, 4000);
   }
 }
 
