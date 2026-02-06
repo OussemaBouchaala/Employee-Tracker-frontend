@@ -5,13 +5,14 @@
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   position: absolute;
-  top: 60px;
-  right: 10px;
+  top: calc(100% + 8px);
+  right: 0;
   min-width: 280px;
   padding: 0;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
-  z-index: 1000;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 6px rgba(0, 0, 0, 0.08);
+  z-index: 1001;
   animation: slideDown 0.2s ease-out;
+  overflow: hidden;
 }
 
 @keyframes slideDown {
@@ -120,6 +121,24 @@
 
 .logout-item:hover svg {
   color: #b91c1c;
+}
+
+/* Dashboard Item (Admin) */
+.menu-item[routerLink="/admin"] {
+  color: #6366f1;
+}
+
+.menu-item[routerLink="/admin"] svg {
+  color: #6366f1;
+}
+
+.menu-item[routerLink="/admin"]:hover {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.menu-item[routerLink="/admin"]:hover svg {
+  color: #4f46e5;
 }
 
 /* Divider */

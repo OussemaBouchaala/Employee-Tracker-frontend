@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Auth, User } from '../../../core/services/auth.service';
@@ -12,11 +12,11 @@ import { base_api } from '../../../config/api/base-api';
   styleUrl: './profile.css',
 })
 export class UserProfile implements OnInit {
-  user: User | null = null;
-  isEditing = false;
-  editData: any = {};
-  profilePictureInput: any;
-  cvInput: any;
+  user = signal<User | null>(null);
+  isEditing = signal(false);
+  editData = signal<any>({});
+  profilePictureInput = signal<any>(null);
+  cvInput = signal<any>(null);
 
   constructor(
     private auth: Auth,
@@ -25,7 +25,7 @@ export class UserProfile implements OnInit {
 
   ngOnInit(): void {
     this.auth.currentUser$.subscribe(user => {
-      this.user = user;
+      this.user.set(user);
       console.log('User profile:', user);
     });
 
@@ -36,7 +36,7 @@ export class UserProfile implements OnInit {
   }
 
   getProfileImageUrl(): string {
-    const url = this.user?.profilePictureUrl;
+    const url = this.user()?.profilePictureUrl;
     console.log('Profile picture URL:', url);
 
     // If no profile picture URL, return default
@@ -49,32 +49,32 @@ export class UserProfile implements OnInit {
   }
 
   getCvUrl(): string {
-    const url = this.user?.cv;
+    const url = this.user()?.cv;
     if (!url) return '';
     if (url.startsWith('http')) return url;
     return `${base_api}/${url}`;
   }
 
   startEdit() {
-    this.editData = {
-      name: this.user?.name,
-      phoneNumber: this.user?.phoneNumber,
-      description: this.user?.description,
-      companyName: this.user?.companyName
-    };
-    this.isEditing = true;
+    this.editData.set({
+      name: this.user()?.name,
+      phoneNumber: this.user()?.phoneNumber,
+      description: this.user()?.description,
+      companyName: this.user()?.companyName
+    });
+    this.isEditing.set(true);
   }
 
   cancelEdit() {
-    this.isEditing = false;
-    this.editData = {};
+    this.isEditing.set(false);
+    this.editData.set({});
   }
 
   saveProfile() {
-    this.auth.updateProfile(this.editData).subscribe({
+    this.auth.updateProfile(this.editData()).subscribe({
       next: (updatedUser) => {
         // The auth service automatically updates currentUser subject, so this.user will update
-        this.isEditing = false;
+        this.isEditing.set(false);
       },
       error: (err) => console.error('Failed to update profile', err)
     });
@@ -85,16 +85,16 @@ export class UserProfile implements OnInit {
     fileInput?.click();
   }
 
-  onProfilePictureSelected(event: any) {
+  onFileSelected(event: any,fileType: 'profilePicture' | 'cv') {
     const file = event.target.files[0];
     if (file) {
       // You can add profile picture upload logic here
       console.log('Profile picture selected in file:', file.name);
       // Dummy API call for profile picture upload
       const formData = new FormData();
-      formData.append('profilePicture', file);
+      formData.append(fileType, file);
       console.log('formData prepared for upload:', Array.from(formData.entries()));
-      this.auth.updateProfile(formData as any).subscribe({
+      this.auth.updateProfile(formData as Partial<User>).subscribe({
         next: (user) => {
           console.log('Profile picture updated successfully', user);
         },
@@ -109,16 +109,6 @@ export class UserProfile implements OnInit {
   triggerCvUpload() {
     const fileInput = document.getElementById('cvInput') as HTMLInputElement;
     fileInput?.click();
-  }
-
-  onCvSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      // You can add CV upload logic here
-      console.log('CV selected:', file.name);
-      // Call your auth service method to upload the CV
-      // this.auth.uploadCv(file).subscribe(...);
-    }
   }
 }
 

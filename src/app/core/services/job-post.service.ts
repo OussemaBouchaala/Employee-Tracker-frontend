@@ -6,7 +6,7 @@ import { UpdateJobPostDto } from '../models/job-post/update-job-post.dto';
 import { JOB_POST_API } from '../../config/api/job-post-api';
 
 export interface JobPost {
-    _id: string;
+    id: string;
     title: string;
     employmentType: string;
     requirements: string;
@@ -19,7 +19,7 @@ export interface JobPost {
 }
 
 export interface JobPostCandidate {
-    _id: string;
+    id: string;
     jobPostId: string;
     candidateId: string;
     score: number;

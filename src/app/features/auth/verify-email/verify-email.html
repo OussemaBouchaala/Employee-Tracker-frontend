@@ -1,12 +1,12 @@
 <!-- Error Toast Notification -->
-@if (showErrorToast) {
+@if (showErrorToast()) {
 <div class="toast-error">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
         class="toast-icon">
         <path stroke-linecap="round" stroke-linejoin="round"
             d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
     </svg>
-    <span>{{ toastErrorMessage }}</span>
+    <span>{{ toastErrorMessage() }}</span>
     <button class="toast-close" (click)="closeToast()">×</button>
 </div>
 }
@@ -43,7 +43,7 @@
             </svg>
         </div>
         <h2>Email Verified!</h2>
-        <p class="subtitle success-text">{{ successMessage }}</p>
+        <p class="subtitle success-text">{{ successMessage() }}</p>
         <p class="redirect-info">Redirecting to login in 3 seconds...</p>
         <button class="btn-verify" (click)="goToLogin()">Go to Login Now</button>
         }
@@ -57,7 +57,7 @@
             </svg>
         </div>
         <h2>Already Verified</h2>
-        <p class="subtitle">{{ errorMessage }}</p>
+        <p class="subtitle">{{ errorMessage() }}</p>
         <p class="info-text">Your email is already verified. You can proceed to login.</p>
         <button class="btn-verify" (click)="goToLogin()">Go to Login</button>
         }
@@ -71,7 +71,7 @@
             </svg>
         </div>
         <h2>Verification Failed</h2>
-        <p class="subtitle error-text">{{ errorMessage }}</p>
+        <p class="subtitle error-text">{{ errorMessage() }}</p>
         <a routerLink="/register" class="btn-secondary">Back to Register</a>
         }
     </div>

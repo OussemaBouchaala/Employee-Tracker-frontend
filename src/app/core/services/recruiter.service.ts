@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { base_api } from '../../config/api/base-api';
 
 export interface Recruiter {
-  _id: string;
+  id: string;
   userId: string;
   companyName: string;
 }

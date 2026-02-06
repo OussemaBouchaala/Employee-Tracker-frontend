@@ -16,10 +16,10 @@ import { NotificationService } from '../../core/services/notification';
   styleUrl: './navbar.css',
 })
 export class Navbar implements OnInit, OnDestroy {
-  isMenuVisible = false;
-  isNotificationsVisible = false;
-  isLoggedIn = false;
-  currentUser: User | null = null;
+  isMenuVisible = signal(false);
+  isNotificationsVisible = signal(false);
+  isLoggedIn = signal(false);
+  currentUser = signal<User | null>(null);
   private authSubscription?: Subscription;
   private userSubscription?: Subscription;
   profileImgUrl: WritableSignal<string> = signal('');
@@ -34,10 +34,10 @@ export class Navbar implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.authSubscription = this.auth.isLoggedIn$.subscribe(
-      (loggedIn) => (this.isLoggedIn = loggedIn),
+      (loggedIn) => this.isLoggedIn.set(loggedIn),
     );
     this.userSubscription = this.auth.currentUser$.subscribe((user) => {
-      this.currentUser = user;
+      this.currentUser.set(user);
       console.log('Current user:', user);
       const userId = user?.id;
       if (userId) {
@@ -61,7 +61,7 @@ export class Navbar implements OnInit, OnDestroy {
   }
 
   getProfileImageUrl(): string {
-    const url = this.currentUser?.profilePictureUrl;
+    const url = this.currentUser()?.profilePictureUrl;
 
     // If no profile picture URL, return default
     if (!url || url.includes('undefined') || url.trim() === '') {
@@ -76,9 +76,9 @@ export class Navbar implements OnInit, OnDestroy {
   }
 
   toggleMenu() {
-    this.isMenuVisible = !this.isMenuVisible;
+    this.isMenuVisible.set(!this.isMenuVisible());
   }
   toggleNotif() {
-    this.isNotificationsVisible = !this.isNotificationsVisible;
+    this.isNotificationsVisible.set(!this.isNotificationsVisible());
   }
 }

@@ -32,6 +32,7 @@ export const routes: Routes = [
       path: 'profile',
       loadComponent: () => import('./shared/user/profile/profile').then(m => m.UserProfile)
   },
+  
   {
       path: 'admin',
       component: AdminDashboard,
@@ -64,6 +65,10 @@ export const routes: Routes = [
           },
           {
               path: 'jobs/create',
+              loadComponent: () => import('./features/recruiter/pages/create-job-post/create-job-post').then(m => m.CreateJobPost)
+          },
+          {
+              path: 'jobs/:id/edit',
               loadComponent: () => import('./features/recruiter/pages/create-job-post/create-job-post').then(m => m.CreateJobPost)
           },
           {

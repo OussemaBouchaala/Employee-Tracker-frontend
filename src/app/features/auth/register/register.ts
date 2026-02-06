@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../core/services/auth.service';
@@ -18,12 +18,12 @@ export class Register {
     private auth: Auth,
     private router: Router,
   ) { }
-  selectedRole: UserRole = 'CANDIDATE';
-  fileName: string = '';
-  profilePictureName: string = '';
-  cvTouched: boolean = false;
+  selectedRole = signal<UserRole>('CANDIDATE');
+  fileName = signal('');
+  profilePictureName = signal('');
+  cvTouched = signal(false);
 
-  formData = {
+  formData = signal({
     name: '',
     email: '',
     password: '',
@@ -34,42 +34,51 @@ export class Register {
     // Candidate specific
     description: '',
     cv: null as File | null
-  };
+  });
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.fileName = input.files[0].name;
-      this.formData.cv = input.files[0];
+      const current = this.formData();
+      this.fileName.set(input.files[0].name);
+      this.formData.set({
+        ...current,
+        cv: input.files[0]
+      });
     }
   }
 
   onProfilePictureSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.profilePictureName = input.files[0].name;
-      this.formData.profilePicture = input.files[0];
+      const current = this.formData();
+      this.profilePictureName.set(input.files[0].name);
+      this.formData.set({
+        ...current,
+        profilePicture: input.files[0]
+      });
     }
   }
 
   onSubmit(): void {
-    const role = this.selectedRole.toLowerCase();
+    const role = this.selectedRole().toLowerCase();
+    const data = this.formData();
 
-    if (this.selectedRole === 'CANDIDATE') {
-      if (!this.formData.cv) {
+    if (this.selectedRole() === 'CANDIDATE') {
+      if (!data.cv) {
         return;
       }
 
       const candidate: RegisterCandidateDto = {
-        name: this.formData.name,
-        email: this.formData.email,
-        password: this.formData.password,
+        name: data.name,
+        email: data.email,
+        password: data.password,
         role: role as any,
-        phoneNumber: this.formData.phoneNumber ?? undefined,
-        description: this.formData.description,
+        phoneNumber: data.phoneNumber ?? undefined,
+        description: data.description,
       };
 
-      this.auth.registerCandidate(candidate, this.formData.cv, this.formData.profilePicture ?? undefined).subscribe({
+      this.auth.registerCandidate(candidate, data.cv, data.profilePicture ?? undefined).subscribe({
         next: () => this.router.navigateByUrl('/verify-email'),
         error: (err) => console.error(err),
       });
@@ -77,12 +86,12 @@ export class Register {
     }
 
     const recruiter: RegisterRecruiterDto = {
-      name: this.formData.name,
-      email: this.formData.email,
-      password: this.formData.password,
+      name: data.name,
+      email: data.email,
+      password: data.password,
       role: role as any,
-      phoneNumber: this.formData.phoneNumber ?? undefined,
-      companyName: this.formData.companyName,
+      phoneNumber: data.phoneNumber ?? undefined,
+      companyName: data.companyName,
     };
 
     this.auth.registerRecruiter(recruiter).subscribe({

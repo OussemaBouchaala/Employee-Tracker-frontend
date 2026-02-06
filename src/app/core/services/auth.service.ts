@@ -89,7 +89,7 @@ export class Auth {
     );
   }
 
-  updateProfile(data: Partial<User>, file?: File): Observable<User> {
+  updateProfile(data: Partial<User>): Observable<User> {
     const id = this.getCurrentUser()?.id;
     if (!id) {
       throw new Error('User ID not found');

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { RouterLink, Router } from "@angular/router";
 import { Auth, User } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './profile.css',
 })
 export class Profile implements OnInit, OnDestroy {
-  currentUser: User | null = null;
+  currentUser = signal<User | null>(null);
   private userSubscription?: Subscription;
 
   constructor(
@@ -22,7 +22,7 @@ export class Profile implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userSubscription = this.auth.currentUser$.subscribe(
-      user => this.currentUser = user
+      user => this.currentUser.set(user)
     );
   }
 
@@ -31,15 +31,15 @@ export class Profile implements OnInit, OnDestroy {
   }
 
   getUserName(): string {
-    return this.currentUser?.name || 'User';
+    return this.currentUser()?.name || 'User';
   }
 
   getUserEmail(): string {
-    return this.currentUser?.email || '';
+    return this.currentUser()?.email || '';
   }
 
   getUserAvatar(): string {
-    const url = this.currentUser?.profilePictureUrl;
+    const url = this.currentUser()?.profilePictureUrl;
 
     if (!url || url.includes('undefined') || url.trim() === '') {
       return '/assets/default-profile.png';
@@ -47,6 +47,10 @@ export class Profile implements OnInit, OnDestroy {
 
     if (url.startsWith('http')) return url;
     return `${base_api}/${url}`;
+  }
+
+  isAdmin(): boolean {
+    return this.currentUser()?.role === 'admin';
   }
 
   logout(): void {

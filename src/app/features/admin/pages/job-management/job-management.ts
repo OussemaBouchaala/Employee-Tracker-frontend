@@ -45,7 +45,7 @@ export class JobManagement implements OnInit {
   viewJobDetails(job: JobPost) {
     this.selectedJob.set(job);
     this.showDetailsModal.set(true);
-    this.loadMatchedCandidates(job._id);
+    this.loadMatchedCandidates(job.id);
   }
 
   loadMatchedCandidates(jobId: string) {

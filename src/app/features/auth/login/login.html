@@ -1,5 +1,5 @@
 <!-- Success Toast for Email Verification -->
-@if (showVerifiedToast) {
+@if (showVerifiedToast()) {
 <div class="toast-success">
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
     class="toast-icon">
@@ -12,14 +12,14 @@
 }
 
 <!-- Error Toast for Login Errors -->
-@if (showErrorToast) {
+@if (showErrorToast()) {
 <div class="toast-error">
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
     class="toast-icon">
     <path stroke-linecap="round" stroke-linejoin="round"
       d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
   </svg>
-  <span>{{ errorMessage }}</span>
+  <span>{{ errorMessage() }}</span>
   <button class="toast-close" (click)="closeToast()">×</button>
 </div>
 }
@@ -28,13 +28,13 @@
 <div class="login-container">
   <form class="login-form" #form="ngForm" (ngSubmit)="onSubmit()">
     <h2>Login</h2>
-    @if (errorMessage) {
-      <div class="error-message">{{ errorMessage }}</div>
+    @if (errorMessage()) {
+      <div class="error-message">{{ errorMessage() }}</div>
     }
     <div class="form-group">
       <label for="email">Email Address</label>
       <input type="email" id="email" name="email" placeholder="Enter your email" required email
-        [(ngModel)]="loginObj.email" #email="ngModel">
+        [(ngModel)]="loginObj().email" #email="ngModel">
       @if(email.touched && email.invalid){
       <div class="error-message">
         @if(email.errors?.['required']){
@@ -49,7 +49,7 @@
     <div class="form-group">
       <label for="password">Password</label>
       <input type="password" id="password" name="password" placeholder="Enter your password" required
-        [(ngModel)]="loginObj.password" #password="ngModel">
+        [(ngModel)]="loginObj().password" #password="ngModel">
       @if(password.touched && password.invalid){
       <div class="error-message">
         @if(password.errors?.['required']){
@@ -59,8 +59,8 @@
       }
     </div>
     <div class="form-actions">
-      <button type="submit" class="btn-login" [disabled]="isLoading">
-        {{ isLoading ? 'Signing in...' : 'Sign In' }}
+      <button type="submit" class="btn-login" [disabled]="isLoading()">
+        {{ isLoading() ? 'Signing in...' : 'Sign In' }}
       </button>
     </div>
     <div class="form-footer">

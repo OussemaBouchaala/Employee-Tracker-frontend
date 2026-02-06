@@ -7,22 +7,22 @@
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
                 class="nav-link">Home</a>
         </li>
-        @if (isLoggedIn && currentUser?.role === 'recruiter') {
+        @if (isLoggedIn() && currentUser()?.role === 'recruiter') {
         <li class="nav-item">
             <a routerLink="/recruiter/jobs" routerLinkActive="active" class="nav-link">My Jobs</a>
         </li>
         }
 
         <!-- Not logged in: Show Login -->
-        @if (!isLoggedIn) {
+        @if (!isLoggedIn()) {
         <li class="nav-item">
             <a routerLink="/login" routerLinkActive="active" class="nav-link">Login</a>
         </li>
         }
 
         <!-- Logged in: Show Notifications and Profile -->
-        @if (isLoggedIn) {
-        @if (currentUser?.role === 'candidate') {
+        @if (isLoggedIn()) {
+        @if (currentUser()?.role === 'candidate') {
         <li class="nav-item">
             <div class="notif-wrap">
                 <button class="notif-button" (click)="toggleNotif()" [class.notif-button--unread]="unreadCount() > 0">
@@ -32,7 +32,7 @@
                     <span class="notif-badge">{{ unreadCount() }}</span>
                     }
                 </button>
-                @if (isNotificationsVisible) {
+                @if (isNotificationsVisible()) {
                 <div class="notif-dropdown">
                     <app-notification></app-notification>
                 </div>
@@ -42,7 +42,7 @@
         }
         <li class="nav-item">
             <img [src]="profileImgUrl()" (click)="toggleMenu()" alt="profile" class="profile-image" />
-            @if (isMenuVisible) {
+            @if (isMenuVisible()) {
             <app-profile></app-profile>
             }
         </li>

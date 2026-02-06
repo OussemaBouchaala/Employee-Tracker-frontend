@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../core/services/auth.service';
@@ -12,9 +12,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.css',
 })
 export class Login implements OnInit {
-  showVerifiedToast = false;
-  showErrorToast = false;
-  errorMessage = '';
+  showVerifiedToast = signal(false);
+  showErrorToast = signal(false);
+  errorMessage = signal('');
 
   constructor(
     private auth: Auth,
@@ -26,40 +26,41 @@ export class Login implements OnInit {
     // Check if redirected from email verification
     const verified = this.route.snapshot.queryParamMap.get('verified');
     if (verified === 'true') {
-      this.showVerifiedToast = true;
+      this.showVerifiedToast.set(true);
       // Auto-hide toast after 5 seconds
       setTimeout(() => {
-        this.showVerifiedToast = false;
+        this.showVerifiedToast.set(false);
       }, 5000);
     }
   }
 
-  loginObj: LoginDto = {
+  loginObj = signal<LoginDto>({
     email: '',
     password: ''
-  };
+  });
 
-  isLoading = false;
+  isLoading = signal(false);
 
   onSubmit(): void {
     // Prevent double submit
-    if (this.isLoading) return;
+    if (this.isLoading()) return;
 
     // Basic validation
-    if (!this.loginObj.email || !this.loginObj.password) {
+    const loginData = this.loginObj();
+    if (!loginData.email || !loginData.password) {
       this.showError('Please enter email and password.');
       return;
     }
 
-    this.isLoading = true;
+    this.isLoading.set(true);
 
-    this.auth.login(this.loginObj).subscribe({
+    this.auth.login(loginData).subscribe({
       next: () => {
-        this.isLoading = false;
+        this.isLoading.set(false);
         this.router.navigateByUrl('/');
       },
       error: (err) => {
-        this.isLoading = false;
+        this.isLoading.set(false);
         console.log(err);
         // Check if email not verified
         if (err.error?.message?.toLowerCase().includes('not verified') ||
@@ -73,17 +74,17 @@ export class Login implements OnInit {
   }
 
   showError(message: string): void {
-    this.errorMessage = message;
-    this.showErrorToast = true;
+    this.errorMessage.set(message);
+    this.showErrorToast.set(true);
     // Auto-hide toast after 5 seconds
     setTimeout(() => {
-      this.showErrorToast = false;
+      this.showErrorToast.set(false);
     }, 5000);
   }
 
   closeToast(): void {
-    this.showVerifiedToast = false;
-    this.showErrorToast = false;
+    this.showVerifiedToast.set(false);
+    this.showErrorToast.set(false);
   }
 }
 

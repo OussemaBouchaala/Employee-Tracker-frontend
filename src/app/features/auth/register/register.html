@@ -4,12 +4,12 @@
 
         <!-- Role Selection -->
         <div class="role-selector">
-            <label class="role-option" [class.active]="selectedRole === 'CANDIDATE'">
+            <label class="role-option" [class.active]="selectedRole() === 'CANDIDATE'">
                 <input type="radio" name="role" value="CANDIDATE" [(ngModel)]="selectedRole">
                 <span class="role-icon">👤</span>
                 <span class="role-label">Candidate</span>
             </label>
-            <label class="role-option" [class.active]="selectedRole === 'RECRUITER'">
+            <label class="role-option" [class.active]="selectedRole() === 'RECRUITER'">
                 <input type="radio" name="role" value="RECRUITER" [(ngModel)]="selectedRole">
                 <span class="role-icon">🏢</span>
                 <span class="role-label">Recruiter</span>
@@ -19,7 +19,7 @@
         <!-- Common Fields -->
         <div class="form-group">
             <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" placeholder="Enter your full name" [(ngModel)]="formData.name"
+            <input type="text" id="name" name="name" placeholder="Enter your full name" [(ngModel)]="formData().name"
                 #nameInput="ngModel" required>
             @if (nameInput.invalid && nameInput.touched) {
             <span class="error-message">Full name is required</span>
@@ -28,7 +28,7 @@
 
         <div class="form-group">
             <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" [(ngModel)]="formData.email"
+            <input type="email" id="email" name="email" placeholder="Enter your email" [(ngModel)]="formData().email"
                 #emailInput="ngModel" required email>
             @if (emailInput.invalid && emailInput.touched) {
             @if (emailInput.errors?.['required']) {
@@ -42,7 +42,7 @@
         <div class="form-group">
             <label for="password">Password</label>
             <input type="password" id="password" name="password" placeholder="Min 8 characters"
-                [(ngModel)]="formData.password" #passwordInput="ngModel" required minlength="8">
+                [(ngModel)]="formData().password" #passwordInput="ngModel" required minlength="8">
             @if (passwordInput.invalid && passwordInput.touched) {
             @if (passwordInput.errors?.['required']) {
             <span class="error-message">Password is required</span>
@@ -55,7 +55,7 @@
         <div class="form-group">
             <label for="phoneNumber">Phone Number</label>
             <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number (8 digits)"
-                [(ngModel)]="formData.phoneNumber" #phoneInput="ngModel" required minlength="8" maxlength="8"
+                [(ngModel)]="formData().phoneNumber" #phoneInput="ngModel" required minlength="8" maxlength="8"
                 pattern="[0-9]{8}">
             @if (phoneInput.invalid && phoneInput.touched) {
             @if (phoneInput.errors?.['required']) {
@@ -73,13 +73,13 @@
                     accept=".png,.jpg,.jpeg">
                 <label for="profilePicture" class="file-label">
                     <span class="file-icon">🖼️</span>
-                    <span class="file-text">{{ profilePictureName || 'Choose your profile picture' }}</span>
+                    <span class="file-text">{{ profilePictureName() || 'Choose your profile picture' }}</span>
                 </label>
             </div>
         </div>
 
         <!-- Recruiter-specific Fields -->
-        @if (selectedRole === 'RECRUITER') {
+        @if (selectedRole() === 'RECRUITER') {
         <div class="role-specific-fields">
             <div class="section-divider">
                 <span>Company Information</span>
@@ -87,7 +87,7 @@
             <div class="form-group">
                 <label for="companyName">Company Name</label>
                 <input type="text" id="companyName" name="companyName" placeholder="Enter your company name"
-                    [(ngModel)]="formData.companyName" #companyInput="ngModel" required>
+                    [(ngModel)]="formData().companyName" #companyInput="ngModel" required>
                 @if (companyInput.invalid && companyInput.touched) {
                 <span class="error-message">Company name is required</span>
                 }
@@ -96,7 +96,7 @@
         }
 
         <!-- Candidate-specific Fields -->
-        @if (selectedRole === 'CANDIDATE') {
+        @if (selectedRole() === 'CANDIDATE') {
         <div class="role-specific-fields">
             <div class="section-divider">
                 <span>Professional Information</span>
@@ -104,7 +104,7 @@
             <div class="form-group">
                 <label for="description">About You</label>
                 <textarea id="description" name="description" placeholder="Tell us about yourself and your experience"
-                    [(ngModel)]="formData.description" #descriptionInput="ngModel" rows="4" required></textarea>
+                    [(ngModel)]="formData().description" #descriptionInput="ngModel" rows="4" required></textarea>
                 @if (descriptionInput.invalid && descriptionInput.touched) {
                 <span class="error-message">Please tell us about yourself</span>
                 }
@@ -112,14 +112,14 @@
             <div class="form-group">
                 <label for="cv">CV / Resume</label>
                 <div class="file-upload">
-                    <input type="file" id="cv" name="cv" (change)="onFileSelected($event)" (blur)="cvTouched = true"
+                    <input type="file" id="cv" name="cv" (change)="onFileSelected($event)" (blur)="cvTouched.set(true)"
                         accept=".pdf,.doc,.docx" required>
-                    <label for="cv" class="file-label" (click)="cvTouched = true">
+                    <label for="cv" class="file-label" (click)="cvTouched.set(true)">
                         <span class="file-icon">📄</span>
-                        <span class="file-text">{{ fileName || 'Choose your CV file' }}</span>
+                        <span class="file-text">{{ fileName() || 'Choose your CV file' }}</span>
                     </label>
                 </div>
-                @if (cvTouched && !fileName) {
+                @if (cvTouched() && !fileName()) {
                 <span class="error-message">Please upload your CV</span>
                 }
             </div>
@@ -128,7 +128,7 @@
 
         <div class="form-actions">
             <button type="submit" class="btn-register"
-                [disabled]="registerForm.invalid || (selectedRole === 'CANDIDATE' && !fileName)">Create Account</button>
+                [disabled]="registerForm.invalid || (selectedRole() === 'CANDIDATE' && !fileName())">Create Account</button>
         </div>
 
         <div class="form-footer">

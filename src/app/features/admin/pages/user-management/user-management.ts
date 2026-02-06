@@ -18,6 +18,10 @@ export class UserManagement implements OnInit {
   isEditModalOpen = signal(false);
   loading = signal(true);
 
+  // Delete confirmation modal
+  isDeleteModalOpen = signal(false);
+  userToDelete = signal<User | null>(null);
+
   // Toast notification signals
   toastMessage = signal('');
   showToast = signal(false);
@@ -50,20 +54,33 @@ export class UserManagement implements OnInit {
   }
 
   deleteUser(id: string) {
-    // Show confirmation toast instead of confirm dialog
     const user = this.users().find(u => u.id === id);
     if (!user) return;
+    
+    // Open confirmation modal
+    this.userToDelete.set(user);
+    this.isDeleteModalOpen.set(true);
+  }
 
-    // For now, we'll proceed with deletion directly
-    // In a real app, you might want a confirmation modal
-    this.userManagementService.deleteUser(id).subscribe({
+  closeDeleteModal() {
+    this.isDeleteModalOpen.set(false);
+    this.userToDelete.set(null);
+  }
+
+  confirmDelete() {
+    const user = this.userToDelete();
+    if (!user) return;
+
+    this.userManagementService.deleteUser(user.id).subscribe({
       next: () => {
         this.displayToast(`User "${user.name}" deleted successfully`, 'success');
         this.loadUsers();
+        this.closeDeleteModal();
       },
       error: (err) => {
         console.error('Error deleting user:', err);
         this.displayToast('Failed to delete user', 'error');
+        this.closeDeleteModal();
       }
     });
   }

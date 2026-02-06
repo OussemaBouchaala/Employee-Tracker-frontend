@@ -16,8 +16,8 @@ export class JobPostDetails implements OnInit {
     candidates = signal<JobPostCandidate[]>([]);
     loading = signal<boolean>(true);
     matchingLoading = signal<boolean>(false);
-    jobId: string | null = null;
-    matchAmount = 5;
+    jobId = signal<string | null>(null);
+    matchAmount = signal(5);
     contactMessage = signal<string>('');
     selectedCandidate = signal<JobPostCandidate | null>(null);
     showContactModal = signal<boolean>(false);
@@ -31,16 +31,18 @@ export class JobPostDetails implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.jobId = this.route.snapshot.paramMap.get('id');
-        if (this.jobId) {
+        const id = this.route.snapshot.paramMap.get('id');
+        this.jobId.set(id);
+        if (id) {
             this.loadJobPost();
             this.loadCandidates();
         }
     }
 
     loadJobPost() {
-        if (!this.jobId) return;
-        this.jobPostService.findOne(this.jobId).subscribe({
+        const id = this.jobId();
+        if (!id) return;
+        this.jobPostService.findOne(id).subscribe({
             next: (post) => {
                 console.log('Job Post Loaded:', post);
                 this.jobPost.set(post);
@@ -54,8 +56,9 @@ export class JobPostDetails implements OnInit {
     }
 
     loadCandidates() {
-        if (!this.jobId) return;
-        this.jobPostService.getCandidates(this.jobId).subscribe({
+        const id = this.jobId();
+        if (!id) return;
+        this.jobPostService.getCandidates(id).subscribe({
             next: (data) => {
                 console.log('Existing candidates loaded:', data);
                 this.candidates.set(data);
@@ -65,9 +68,10 @@ export class JobPostDetails implements OnInit {
     }
 
     findMatches() {
-        if (!this.jobId) return;
+        const id = this.jobId();
+        if (!id) return;
         this.matchingLoading.set(true);
-        this.jobPostService.findAndMatchCandidates(this.jobId, this.matchAmount).subscribe({
+        this.jobPostService.findAndMatchCandidates(id, this.matchAmount()).subscribe({
             next: (newMatches) => {
                 console.log('Matches found', newMatches);
                 this.matchingLoading.set(false);
@@ -109,10 +113,11 @@ export class JobPostDetails implements OnInit {
     sendContactMessage() {
         const candidate = this.selectedCandidate();
         const message = this.contactMessage();
-        
-        if (!candidate || !message || !this.jobId) return;
+        const jobId = this.jobId();
 
-        this.jobPostService.contactCandidate(this.jobId, candidate.candidateId, message).subscribe({
+        if (!candidate || !message || !jobId) return;
+
+        this.jobPostService.contactCandidate(jobId, candidate.candidateId, message).subscribe({
             next: (response: any) => {
                 console.log('Contact message sent:', response);
                 this.closeContactModal();

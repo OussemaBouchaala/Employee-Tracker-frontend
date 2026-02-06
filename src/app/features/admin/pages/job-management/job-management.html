@@ -22,7 +22,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (job of jobs(); track job._id) {
+                @for (job of jobs(); track job.id) {
                 <tr>
                     <td>
                         <div class="job-title">{{ job.title }}</div>
@@ -43,7 +43,7 @@
                             </svg>
                             View
                         </button>
-                        <button (click)="deleteJob(job._id)" class="btn-icon delete" title="Delete">
+                        <button (click)="deleteJob(job.id)" class="btn-icon delete" title="Delete">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
                                 <polyline points="3 6 5 6 21 6"></polyline>
@@ -123,7 +123,7 @@
                     <div class="loading-candidates">Loading candidates...</div>
                     } @else if (matchedCandidates().length > 0) {
                     <div class="candidates-list">
-                        @for (match of matchedCandidates(); track match._id) {
+                        @for (match of matchedCandidates(); track match.id) {
                         <div class="candidate-card">
                             <div class="candidate-info">
                                 <div class="candidate-name">

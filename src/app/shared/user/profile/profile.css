@@ -8,6 +8,10 @@
     padding: 40px 20px;
 }
 
+.hidden {
+    display: none;
+}
+
 .profile-card {
     background: rgba(30, 41, 59, 0.9);
     backdrop-filter: blur(20px);

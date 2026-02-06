@@ -12,12 +12,12 @@ type VerifyStatus = 'pending' | 'verifying' | 'success' | 'error' | 'already-ver
     styleUrl: './verify-email.css'
 })
 export class VerifyEmail implements OnInit {
-    token: string | null = null;
+    token = signal<string | null>(null);
     status = signal<VerifyStatus>('pending');
-    successMessage: string = '';
-    errorMessage: string = '';
-    showErrorToast: boolean = false;
-    toastErrorMessage: string = '';
+    successMessage = signal('');
+    errorMessage = signal('');
+    showErrorToast = signal(false);
+    toastErrorMessage = signal('');
 
     constructor(
         private route: ActivatedRoute,
@@ -26,26 +26,28 @@ export class VerifyEmail implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.token = this.route.snapshot.queryParamMap.get('token');
+        const tokenFromUrl = this.route.snapshot.queryParamMap.get('token');
+        this.token.set(tokenFromUrl);
 
         // Auto-verify if token is present
-        if (this.token) {
+        if (tokenFromUrl) {
             this.verifyToken();
         }
     }
 
     verifyToken(): void {
-        if (!this.token) {
+        const tokenValue = this.token();
+        if (!tokenValue) {
             this.showError('No verification token provided.');
             return;
         }
 
         this.status.set('verifying');
 
-        this.auth.verifyEmail(this.token).subscribe({
+        this.auth.verifyEmail(tokenValue).subscribe({
             next: (response: any) => {
                 this.status.set('success');
-                this.successMessage = response.message || 'Email verified successfully!';
+                this.successMessage.set(response.message || 'Email verified successfully!');
 
                 // Auto-redirect to login after 3 seconds with verified flag
                 setTimeout(() => {
@@ -57,25 +59,25 @@ export class VerifyEmail implements OnInit {
                 console.log(err.error.statusCode);
                 // Token not found in database
                 this.status.set('error');
-                this.errorMessage = err.error.message;
+                this.errorMessage.set(err.error.message);
             }
         });
     }
 
     showError(message: string): void {
         this.status.set('error');
-        this.toastErrorMessage = message;
-        this.showErrorToast = true;
-        this.errorMessage = message;
+        this.toastErrorMessage.set(message);
+        this.showErrorToast.set(true);
+        this.errorMessage.set(message);
 
         // Auto-hide toast after 5 seconds
         setTimeout(() => {
-            this.showErrorToast = false;
+            this.showErrorToast.set(false);
         }, 5000);
     }
 
     closeToast(): void {
-        this.showErrorToast = false;
+        this.showErrorToast.set(false);
     }
 
     goToLogin(): void {
